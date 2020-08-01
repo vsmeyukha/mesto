@@ -1,5 +1,5 @@
 .header {
-  width: calc(100% - (199px * 2));
+  width: 100%;
 
   border-bottom: 1px solid #545454;
 }

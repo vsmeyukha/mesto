@@ -1,0 +1,12 @@
+.cards {
+  width: 100%;
+  margin-top: 51px;
+
+  grid-area: cards;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  column-gap: 18px;
+  row-gap: 21px;
+}

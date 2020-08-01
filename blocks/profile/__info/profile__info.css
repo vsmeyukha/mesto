@@ -1,0 +1,6 @@
+.profile__info {
+  margin-left: 30px;
+  margin-right: 17px;
+
+  grid-area: info;
+}

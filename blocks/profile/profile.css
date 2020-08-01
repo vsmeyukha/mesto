@@ -5,7 +5,17 @@
 @import url(./__edit-button/profile__edit-button.css);
 @import url(./__pencil/profile__pencil.css);
 @import url(./__add-button/profile__add-button.css);
+@import url(./__plus/profile__plus.css);
+@import url(./__av-info-edit-container/profile__av-info-edit-container.css);
 
 .profile {
+  width: 100%;
 
+  grid-area: profile;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 40px;
 }
