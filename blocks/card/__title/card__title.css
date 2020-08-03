@@ -10,3 +10,9 @@
 
   margin: 0;
 }
+
+@media screen and (max-width: 900px) {
+  .card__title {
+    font-size: 20px;
+  }
+}
