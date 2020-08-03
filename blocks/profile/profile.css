@@ -8,7 +8,7 @@
 @import url(./__plus/profile__plus.css);
 @import url(./__av-info-edit-container/profile__av-info-edit-container.css);
 
-.profile {
+/* .profile {
   width: 100%;
 
   grid-area: profile;
@@ -18,4 +18,29 @@
   align-items: center;
 
   margin-top: 40px;
+} */
+
+.profile {
+  width: 100%;
+
+  grid-area: profile;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(min-content, max-content)) 1fr;
+  grid-template-rows: repeat(2, minmax(min-content, max-content));
+  grid-template-areas: 
+  "avatar name edit-button add-button"
+  "avatar regalia . .";
+
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .profile {
+    grid-template-columns: repeat(2, minmax(min-content, max-content)) 1fr;
+    grid-template-rows: repeat(2, minmax(min-content, max-content)) 1fr;
+    grid-template-areas: 
+      "avatar name edit-button"
+      "avatar regalia add-button";
+  }
 }

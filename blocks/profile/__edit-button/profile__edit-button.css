@@ -7,6 +7,21 @@
 
   padding: 0;
 
-  grid-area: button;
+  /* grid-area: button; */
   align-self: center;
+
+  grid-area: edit-button;
+
+  margin-left: 17px;
+  align-self: center;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__edit-button{
+    width: 90px;
+    height: 40px;
+    justify-self: end;
+    align-self: start;
+    border-radius: 2px;
+  }
 }

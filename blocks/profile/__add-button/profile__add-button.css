@@ -12,4 +12,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  grid-area: add-button;
+
+  justify-self: end;
+  align-self: end;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__add-button{
+    width: 90px;
+    height: 40px;
+    border: 1px solid white;  
+  }
 }

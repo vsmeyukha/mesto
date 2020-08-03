@@ -5,4 +5,7 @@
   object-fit: cover;
 
   grid-area: avatar;
+
+  margin-right: 30px;
+  align-self: center;
 }
