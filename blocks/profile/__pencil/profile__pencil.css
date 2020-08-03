@@ -4,3 +4,10 @@
     height: 17px;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .profile__pencil {
+    width: 10px;
+    height: 10px;
+  }
+}

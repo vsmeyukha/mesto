@@ -9,3 +9,10 @@
   margin-right: 30px;
   align-self: center;
 }
+
+@media screen and (max-width: 500px) {
+  .profile__avatar {
+    justify-self: center;
+    margin: 0;
+  }
+}

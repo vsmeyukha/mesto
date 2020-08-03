@@ -7,3 +7,14 @@
 
   grid-area: regalia;
 }
+
+@media screen and (max-width: 500px) {
+  .profile__regalia {
+    font-size: 14px;
+    line-height: 1.214;
+    margin: 0;
+    justify-self: stretch;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+}

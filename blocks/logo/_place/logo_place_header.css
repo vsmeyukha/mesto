@@ -2,3 +2,9 @@
   margin-top: 45px;
   margin-bottom: 40px;
 }
+
+@media screen and (max-width: 320px) {
+  .logo_place_header {
+    margin-left: 27px;
+  }
+}
