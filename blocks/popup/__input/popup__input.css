@@ -1,0 +1,10 @@
+.popup__input {
+  border: none;
+  font-family: 'Inter', Arial, sans-serif;
+
+  margin-bottom: 14px;
+}
+
+.popup__input:focus {
+  outline: palegoldenrod 2px solid;
+}
