@@ -1,0 +1,10 @@
+.popup__input-regalia {
+  border: none;
+  font-family: 'Inter', Arial, sans-serif;
+
+  margin-bottom: 14px;
+}
+
+.popup__input-regalia:focus {
+  outline: palegoldenrod 2px solid;
+}

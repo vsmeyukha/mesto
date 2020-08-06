@@ -37,3 +37,15 @@ let page = document.querySelector('.page');
 // page.addEventListener('click', (evt) => console.log('gogol'), true);
 
 // ! ОТОБРАЖЕНИЕ ИНФЫ СО СТРАНИЦЫ В ПЛЕЙСХОЛДЕРАХ ФОРМ ПОПАПА
+
+let profileName = document.querySelector('.profile__name');
+let profileRegalia = document.querySelector('.profile__regalia');
+
+let username = document.querySelector('.popup__input-name');
+let regalia = document.querySelector('.popup__input-regalia');
+
+username.placeholder = profileName.textContent;
+regalia.placeholder = profileRegalia.textContent;
+
+console.log(username.placeholder);
+console.log(regalia.placeholder);
