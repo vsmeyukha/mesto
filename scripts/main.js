@@ -1,3 +1,5 @@
+// ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПА
+
 // * кнопка открытия попапа
 let profileEditButton = document.querySelector('.profile__edit-button');
 // console.log(profileEditButton);
@@ -14,17 +16,24 @@ let popupCloseButton = document.querySelector('.popup__close-button');
 let popupContainer = document.querySelector('.popup__container');
 // console.log(popupContainer);
 
-let popupReaction = function (event) {
-  console.log(event);
+let popupReaction = function () {
   popup.classList.toggle('popup_opened');
 }
 
-// popupReaction();
+let popupClose = function (event) {
+  if (event.target !== event.currentTarget) {
+    return;
+  } else {
+    popupReaction(event);
+  }
+}
 
-profileEditButton.addEventListener('click', popupReaction, true);
-
-popupCloseButton.addEventListener('click', popupReaction, true);
+profileEditButton.addEventListener('click', popupReaction);
+popupCloseButton.addEventListener('click', popupReaction);
+popup.addEventListener('click', popupClose)
 
 let page = document.querySelector('.page');
 
-page.addEventListener('click', (evt) => console.log('gogol'), true);
+// page.addEventListener('click', (evt) => console.log('gogol'), true);
+
+// ! ОТОБРАЖЕНИЕ ИНФЫ СО СТРАНИЦЫ В ПЛЕЙСХОЛДЕРАХ ФОРМ ПОПАПА
