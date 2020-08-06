@@ -41,11 +41,37 @@ let page = document.querySelector('.page');
 let profileName = document.querySelector('.profile__name');
 let profileRegalia = document.querySelector('.profile__regalia');
 
-let username = document.querySelector('.popup__input-name');
-let regalia = document.querySelector('.popup__input-regalia');
+let popupInputName = document.querySelector('.popup__input-name');
+let popupInputRegalia = document.querySelector('.popup__input-regalia');
 
-username.placeholder = profileName.textContent;
-regalia.placeholder = profileRegalia.textContent;
+popupInputName.placeholder = profileName.textContent;
+popupInputRegalia.placeholder = profileRegalia.textContent;
 
-console.log(username.placeholder);
-console.log(regalia.placeholder);
+console.log(popupInputName.value);
+
+
+
+// ! ЗНАЧЕНИЯ, ВВЕДЕННЫЕ В ФОРМЫ, ПЕРЕДАЮТСЯ В БЛОК PROFILE
+
+let popupForm = popup.querySelector('.popup__form');
+
+function formSubmitHandler (evt) {
+  evt.preventDefault(); 
+  
+  let popupInputName = document.querySelector('.popup__input-name');
+  let popupInputRegalia = document.querySelector('.popup__input-regalia');
+  
+  let profileName = document.querySelector('.profile__name');
+  let profileRegalia = document.querySelector('.profile__regalia');
+
+  let popupInputNameValue = popupInputName.value;
+  let popupInputRegaliaValue = popupInputRegalia.value;
+
+  profileName.textContent = popupInputNameValue;
+  profileRegalia.textContent = popupInputRegaliaValue;
+}
+
+// Прикрепляем обработчик к форме:
+// он будет следить за событием “submit” - «отправка»
+popupForm.addEventListener('submit', formSubmitHandler);
+popupForm.addEventListener('submit', popupReaction);
