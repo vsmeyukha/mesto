@@ -16,7 +16,7 @@ let popupCloseButton = document.querySelector('.popup__close-button');
 let popupContainer = document.querySelector('.popup__container');
 // console.log(popupContainer);
 
-let popupReaction = function () {
+let changePopupClass = function () {
   popup.classList.toggle('popup_opened');
 }
 
@@ -24,12 +24,12 @@ let popupClose = function (event) {
   if (event.target !== event.currentTarget) {
     return;
   } else {
-    popupReaction(event);
+    changePopupClass(event);
   }
 }
 
-profileEditButton.addEventListener('click', popupReaction);
-popupCloseButton.addEventListener('click', popupReaction);
+profileEditButton.addEventListener('click', changePopupClass);
+popupCloseButton.addEventListener('click', changePopupClass);
 popup.addEventListener('click', popupClose)
 
 let page = document.querySelector('.page');
@@ -74,4 +74,4 @@ function formSubmitHandler (evt) {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 popupForm.addEventListener('submit', formSubmitHandler);
-popupForm.addEventListener('submit', popupReaction);
+popupForm.addEventListener('submit', changePopupClass);

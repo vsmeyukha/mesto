@@ -10,6 +10,12 @@
 
   grid-area: name;
   align-self: end;
+
+  /* ! Ирина, этот набор свойств (ниже) не работает здесь. не знаю, почему. не получается реализовать обрыв строки многоточием. ПАМАГИТИ! */
+
+  /* overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; */
 }
 
 @media screen and (max-width: 500px) {
