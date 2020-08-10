@@ -15,3 +15,16 @@
 
   cursor: pointer;
 }
+
+.popup__close-button:hover {
+  opacity: .6;
+  transition: .3s;
+}
+
+.popup__close-button:focus {
+    transform: rotate(180deg);
+    opacity: 0.6;
+    transition: .5s;
+
+  }
+}

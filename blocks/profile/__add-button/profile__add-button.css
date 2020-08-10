@@ -17,6 +17,24 @@
 
   justify-self: end;
   align-self: end;
+
+  cursor: pointer;
+}
+
+.profile__add-button:hover {
+  border: 2px solid rgba(255, 255, 255, .6);
+  transition: .3s;
+}
+
+.profile__add-button:focus {
+  transform: rotate(180deg);
+  transition: .5s;
+  outline: none;
+}
+
+.profile__add-button:hover .profile__plus {
+  opacity: .6;
+  transition: .3s;
 }
 
 @media screen and (max-width: 768px) {

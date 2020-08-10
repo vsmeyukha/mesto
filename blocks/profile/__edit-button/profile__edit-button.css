@@ -16,6 +16,24 @@
   align-self: center;
 }
 
+.profile__edit-button:hover {
+  border: 1px solid rgba(255, 255, 255, .6);
+  transition: .3s;
+  cursor: pointer;
+}
+
+.profile__edit-button:hover .profile__pencil {
+  opacity: 0.6;;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.profile__edit-button:focus {
+  transform: rotate(360deg);
+  transition: .5s;
+  outline: none;
+}
+
 @media screen and (max-width: 768px) {
   .profile__edit-button{
     width: 90px;
