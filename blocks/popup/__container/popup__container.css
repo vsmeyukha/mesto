@@ -8,8 +8,7 @@
   flex-direction: column;
   justify-content: center;
 
-  padding-left: 36px;
-  padding-right: 36px;
+  padding: 0 36px;
   box-sizing: border-box;
 
   position: fixed;
@@ -17,4 +16,13 @@
   left: 50%;
   margin-top: -165px;
   margin-left: -215px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__container {
+    width: 80%;
+    margin: 0;
+    top: 40%;
+    left: 10%;
+  }
 }

@@ -18,3 +18,10 @@
 .popup__input:last-child {
   margin-top: 30px;
 }
+
+@media screen and (max-width: 320px) {
+  .popup__input {
+    font-size: 12px;
+    padding-bottom: 8px;
+  }
+}

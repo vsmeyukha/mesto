@@ -14,3 +14,9 @@
 
   margin-top: 48px;
 }
+
+@media screen and (max-width: 600px) {
+  .popup__submit {
+    margin-top: 32px;
+  }
+}
