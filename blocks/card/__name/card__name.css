@@ -71,3 +71,9 @@
     width: 300px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .card__name {
+    width: 246px;
+  }
+}
