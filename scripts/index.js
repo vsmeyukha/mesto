@@ -1,37 +1,37 @@
 // ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПА
 
 // * кнопка открытия попапа
-let profileEditButton = document.querySelector('.profile__edit-button');
+const profileEditButton = document.querySelector('.profile__edit-button');
 
 // * фон
-let popup = document.querySelector('.popup');
+const popup = document.querySelector('.popup');
 
 // * кнопка закрытия попапа
-let popupCloseButton = document.querySelector('.popup__close-button');
+const popupCloseButton = document.querySelector('.popup__close-button');
 
 // * сам попап
-let popupContainer = document.querySelector('.popup__container');
+const popupContainer = document.querySelector('.popup__container');
 
 // * присваиваем переменным поля из блока profile
-let profileName = document.querySelector('.profile__name');
-let profileRegalia = document.querySelector('.profile__regalia');
+const profileName = document.querySelector('.profile__name');
+const profileRegalia = document.querySelector('.profile__regalia');
 
 // * присваиваем переменным инпуты из попапа
-let popupInputTypeName = document.querySelector('.popup__input_type_name');
-let popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
+const popupInputTypeName = document.querySelector('.popup__input_type_name');
+const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 
-let popupForm = popup.querySelector('.popup__form');
+const popupForm = popup.querySelector('.popup__form');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
-let changePopupClass = function () {
+const togglePopupClass = function () {
   popup.classList.toggle('popup_opened');
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
-let popupClose = function (event) {
+const popupClose = function (event) {
   if (event.target !== event.currentTarget) {
     return;
-  } changePopupClass(event);
+  } togglePopupClass(event);
 }
 
 // ! ЗНАЧЕНИЯ, ВВЕДЕННЫЕ В ФОРМЫ, ПЕРЕДАЮТСЯ В БЛОК PROFILE
@@ -46,12 +46,12 @@ function formSubmitHandler (evt) {
   popupInputTypeName.placeholder = profileName.textContent;
   popupInputTypeRegalia.placeholder = profileRegalia.textContent;
 
-  changePopupClass();
+  togglePopupClass();
 }
 
-// * навешиваем обработчики событий на кнопку edit в блоке profile и кнопку закрытия открытого попапа. по клику на эти эл-ты запускается функция changePopupClass - добавление или удаление класса popup_opened
-profileEditButton.addEventListener('click', changePopupClass);
-popupCloseButton.addEventListener('click', changePopupClass);
+// * навешиваем обработчики событий на кнопку edit в блоке profile и кнопку закрытия открытого попапа. по клику на эти эл-ты запускается функция togglePopupClass - добавление или удаление класса popup_opened
+profileEditButton.addEventListener('click', togglePopupClass);
+popupCloseButton.addEventListener('click', togglePopupClass);
 
 // * навешиваем обработчик событий на фон попапа. по клику на фон попап закрывается.
 popup.addEventListener('click', popupClose);
