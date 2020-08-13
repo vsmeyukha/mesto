@@ -23,6 +23,10 @@ const popupForm = popup.querySelector('.popup__form');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
 const togglePopupClass = function () {
+  if (popup.classList.contains('popup_opened') === false) {
+    popupInputTypeName.value = profileName.textContent;
+    popupInputTypeRegalia.value = profileRegalia.textContent;
+  }  
   popup.classList.toggle('popup_opened');
 }
 
@@ -41,10 +45,6 @@ function formSubmitHandler (evt) {
   profileName.textContent = popupInputTypeName.value;
   profileRegalia.textContent = popupInputTypeRegalia.value;
 
-  // ! Ирина, я не понял, что вы имеете в виду, говоря, что "данные должны заноситься в форму в момент открытия модального окна". поясните, пожалуйста. 
-  popupInputTypeName.placeholder = profileName.textContent;
-  popupInputTypeRegalia.placeholder = profileRegalia.textContent;
-
   togglePopupClass();
 }
 
@@ -55,5 +55,3 @@ popupCloseButton.addEventListener('click', togglePopupClass);
 // * навешиваем обработчик событий на фон попапа. по клику на фон попап закрывается.
 popup.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
-
-// ! Ирина, надеюсь, вы досюда дочитаете) не пойму один нюанс: когда вводишь что-то в формы в попапе, сохраняешь, закрываешь и открывааешь попап снова, эти значения сохраняются в формах, то есть они не в плейсхолдерах, а в value. почему так происходит и как это исправить? 
