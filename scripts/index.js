@@ -1,5 +1,3 @@
-// ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПА
-
 // * кнопка открытия попапа
 const profileEditButton = document.querySelector('.profile__edit-button');
 
@@ -20,6 +18,7 @@ const profileRegalia = document.querySelector('.profile__regalia');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 
+// * вся форма попапа
 const popupForm = popup.querySelector('.popup__form');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
@@ -28,7 +27,7 @@ const togglePopupClass = function () {
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
-const popupClose = function (event) {
+const closePopupOnClick = function (event) {
   if (event.target !== event.currentTarget) {
     return;
   } togglePopupClass(event);
@@ -54,7 +53,7 @@ profileEditButton.addEventListener('click', togglePopupClass);
 popupCloseButton.addEventListener('click', togglePopupClass);
 
 // * навешиваем обработчик событий на фон попапа. по клику на фон попап закрывается.
-popup.addEventListener('click', popupClose);
+popup.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
 
 // ! Ирина, надеюсь, вы досюда дочитаете) не пойму один нюанс: когда вводишь что-то в формы в попапе, сохраняешь, закрываешь и открывааешь попап снова, эти значения сохраняются в формах, то есть они не в плейсхолдерах, а в value. почему так происходит и как это исправить? 
