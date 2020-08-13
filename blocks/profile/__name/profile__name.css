@@ -1,8 +1,9 @@
 .profile__name {
+  width: 100%;
+
   font-family: 'Inter', Arial, sans-serif;
   font-size: 42px;
   line-height: 1.333;
-
   font-weight: normal;
 
   margin: 0;
@@ -13,9 +14,9 @@
 
   /* ! Ирина, этот набор свойств (ниже) не работает здесь. не знаю, почему. не получается реализовать обрыв строки многоточием. ПАМАГИТИ! */
 
-  /* overflow: hidden;
+  overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis; */
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 500px) {

@@ -11,13 +11,12 @@
   <div class="page__content">
 
     <header class="header">
-
-      <!-- ! согласно БЭМ, в любом случае надо же марджины и паддинги выносить в отдельные модификаторы-->
       <div class="logo"></div>
     </header>
 
     <main class="main">
 
+      <!-- ! Ирина, свойства для переполнения с многоточием я добавил в соответствующие CSS-файлы, но они не работают. гуглил, почему могут не работать, не нашел. везде пишут, что этих трех св-в достаточно для реализации такой штуки.-->
       <section class="profile">
           <img src="./images/cousteau.jpg" alt="Аватар пользователя" class="profile__avatar">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -35,42 +34,42 @@
           <img src="./images/bali.jpg" alt="Бали" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Бали</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
         <div class="card">
           <img src="./images/beijing.jpg" alt="Пекин" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Пекин</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
         <div class="card">
           <img src="./images/ekat.jpg" alt="Екатеринбург" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Екатеринбург</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
         <div class="card">
           <img src="./images/himalayas.jpg" alt="Гималаи" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Гималаи</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
         <div class="card">
           <img src="./images/hong-kong.jpg" alt="Гонг-Конг" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Гонг-Конг</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
         <div class="card">
           <img src="./images/london.jpg" alt="Лондон" class="card__img">
           <div class="card__name">
             <h2 class="card__title">Вообще на фотке Лондон, но надо, чтобы было многоточие</h2>
-            <img src="./images/like.svg" alt="лайк" class="card__like">
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
       </section>
@@ -85,7 +84,7 @@
       
 
       <div class="popup__container">
-        <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="" class="popup__close-img"></button>
+        <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form" name="user-info">
             <fieldset class="popup__user-info">

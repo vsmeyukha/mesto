@@ -2,6 +2,7 @@
 @import url(./__name/card__name.css);
 @import url(./__title/card__title.css);
 @import url(./__like/card__like.css);
+@import url(./__like-button/card__like-button.css);
 
 .card {
   width: 100%;

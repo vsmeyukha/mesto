@@ -75,5 +75,6 @@
 @media screen and (max-width: 320px) {
   .card__name {
     width: 246px;
+    margin: 25px 0;
   }
 }
