@@ -28,9 +28,6 @@ const togglePopupClass = function () {
     popupInputTypeRegalia.value = profileRegalia.textContent;
   }  
   popup.classList.toggle('popup_opened');
-
-  popupInputTypeName.placeholder = profileName.textContent;
-  popupInputTypeRegalia.placeholder = profileRegalia.textContent;
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)

@@ -24,7 +24,8 @@
   grid-area: profile;
 
   display: grid;
-  grid-template-columns: repeat(3, minmax(min-content, max-content)) 1fr;
+  /* grid-template-columns: repeat(3, minmax(min-content, max-content)) 1fr; */
+  grid-template-columns: minmax(min-content, max-content) fit-content(350px) minmax(min-content, max-content) 1fr;
   grid-template-rows: repeat(2, minmax(min-content, max-content));
   grid-template-areas: 
   "avatar name edit-button add-button"
