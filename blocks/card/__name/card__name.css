@@ -72,6 +72,24 @@
   }
 }
 
+@media screen and (max-width: 350px) {
+  .card__name {
+    width: 290px;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .card__name {
+    width: 280px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .card__name {
+    width: 270px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .card__name {
     width: 246px;
