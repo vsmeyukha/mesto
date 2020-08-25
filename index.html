@@ -16,11 +16,10 @@
 
     <main class="main">
 
-      <!-- ! Ирина, свойства для переполнения с многоточием я добавил в соответствующие CSS-файлы, но они не работают. гуглил, почему могут не работать, не нашел. везде пишут, что этих трех св-в достаточно для реализации такой штуки.-->
       <section class="profile">
           <img src="./images/cousteau.jpg" alt="Аватар пользователя" class="profile__avatar">
-          <h1 class="profile__name">Жак-Ив Кусто гогогогогогогогогогогогогогогого</h1>
-          <p class="profile__regalia">Исследователь океанa бобобобобобобобобобобобобобобобобобо</p>
+          <h1 class="profile__name">Жак-Ив Кусто</h1>
+          <p class="profile__regalia">Исследователь океанa</p>
           <button class="profile__edit-button">
             <img src="./images/pencil.svg" alt="карандаш" class="profile__pencil">
           </button>
@@ -29,7 +28,9 @@
         </button>
       </section>
 
-      <section class="cards">
+      <section class="cards"></section>
+
+      <!-- <section class="cards">
         <div class="card">
           <img src="./images/bali.jpg" alt="Бали" class="card__img">
           <div class="card__name">
@@ -72,7 +73,7 @@
             <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
           </div>
         </div>
-      </section>
+      </section> -->
 
     </main>
 
@@ -94,6 +95,16 @@
             <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
           </form>
       </div>
+
+      <template id="cards-template">
+        <div class="card">
+          <img src="./images/bali.jpg" alt="Бали" class="card__img">
+          <div class="card__name">
+            <h2 class="card__title">Бали</h2>
+            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
+          </div>
+        </div>
+      </template>
     </div>
 
   </div>

@@ -55,3 +55,46 @@ popupCloseButton.addEventListener('click', togglePopupClass);
 // * навешиваем обработчик событий на фон попапа. по клику на фон попап закрывается.
 popup.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
+
+// ! рендеринг карточек
+
+const initialCards = [
+  {
+      name: 'Архыз',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+      name: 'Челябинская область',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+      name: 'Иваново',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+      name: 'Камчатка',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+      name: 'Холмогорский район',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+      name: 'Байкал',
+      link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+const main = document.querySelector('.main');
+const cardsSection = document.querySelector('.cards');
+
+const addCard = card => {
+  const cards = document.querySelector('#cards-template').content.cloneNode(true);
+
+  cards.querySelector('.card__title').textContent = card.name;
+  cards.querySelector('.card__img').src = card.link;
+
+  cardsSection.append(cards);
+}
+
+initialCards.forEach(addCard);
