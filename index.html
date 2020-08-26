@@ -81,14 +81,13 @@
       <p class="footer__info">&COPY; 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup">
+    <div class="popup popup_type_profile-edit">
       
-
       <div class="popup__container">
         <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
-          <form class="popup__form" name="user-info">
-            <fieldset class="popup__user-info">
+          <form class="popup__form popup__form_type_user-info" name="user-info">
+            <fieldset class="popup__fieldset popup__fieldset_type_user-info">
               <input type="text" class="popup__input popup__input_type_name" placeholder="Жак-Ив Кусто" name="user-name" required>
               <input type="text" class="popup__input popup__input_type_regalia" placeholder="Исследователь океана" name="user-regalia" required>
             </fieldset>
@@ -96,16 +95,33 @@
           </form>
       </div>
 
-      <template id="cards-template">
-        <div class="card">
-          <img src="./images/bali.jpg" alt="Бали" class="card__img">
-          <div class="card__name">
-            <h2 class="card__title">Бали</h2>
-            <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
-          </div>
-        </div>
-      </template>
     </div>
+
+    <div class="popup popup_type_add-new-card">
+      
+      <div class="popup__container">
+        <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
+          <h3 class="popup__title">Новое место</h3>
+          <form class="popup__form" name="card-info">
+            <fieldset class="popup__fieldset popup__fieldset_type_card-info">
+              <input type="text" class="popup__input popup__input_type_card-title" placeholder="Название" name="card-title" required>
+              <input type="url" class="popup__input popup__input_type_card-link" placeholder="Ссылка на картинку" name="card-link" required>
+            </fieldset>
+            <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
+          </form>
+      </div>
+
+    </div>
+
+    <template id="cards-template">
+      <div class="card">
+        <img src="./images/bali.jpg" alt="Бали" class="card__img">
+        <div class="card__name">
+          <h2 class="card__title">Бали</h2>
+          <button class="card__like-button"><img src="./images/like.svg" alt="лайк" class="card__like"></button>
+        </div>
+      </div>
+    </template>
 
   </div>
 <script src="./scripts/index.js"></script>

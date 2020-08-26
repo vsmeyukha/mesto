@@ -1,33 +1,22 @@
-// * кнопка открытия попапа
+// * блок Profile
 const profileEditButton = document.querySelector('.profile__edit-button');
-
-// * фон
-const popup = document.querySelector('.popup');
-
-// * кнопка закрытия попапа
-const popupCloseButton = document.querySelector('.popup__close-button');
-
-// * сам попап
-const popupContainer = document.querySelector('.popup__container');
-
-// * присваиваем переменным поля из блока profile
 const profileName = document.querySelector('.profile__name');
 const profileRegalia = document.querySelector('.profile__regalia');
 
-// * присваиваем переменным инпуты из попапа
+// * popup Profile-Edit
+const popupTypeProfileEdit = document.querySelector('.popup_type_profile-edit');
+const popupCloseButton = document.querySelector('.popup__close-button');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
-
-// * вся форма попапа
-const popupForm = popup.querySelector('.popup__form');
+const popupForm = popupTypeProfileEdit.querySelector('.popup__form');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
 const togglePopupClass = function () {
-  if (popup.classList.contains('popup_opened') === false) {
+  if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
     popupInputTypeName.value = profileName.textContent;
     popupInputTypeRegalia.value = profileRegalia.textContent;
   }  
-  popup.classList.toggle('popup_opened');
+  popupTypeProfileEdit.classList.toggle('popup_opened');
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
@@ -53,7 +42,7 @@ profileEditButton.addEventListener('click', togglePopupClass);
 popupCloseButton.addEventListener('click', togglePopupClass);
 
 // * навешиваем обработчик событий на фон попапа. по клику на фон попап закрывается.
-popup.addEventListener('click', closePopupOnClick);
+popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
 
 // ! рендеринг карточек
@@ -82,19 +71,22 @@ const initialCards = [
   {
       name: 'Байкал',
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  },
+  {
+    name: 'Mozel',
+    link: 'https://alcoholclub.ru/wp-content/uploads/2019/02/Pivo-kozel-Kozel-37.jpg'
   }
 ];
 
-const main = document.querySelector('.main');
 const cardsSection = document.querySelector('.cards');
 
-const addCard = card => {
-  const cards = document.querySelector('#cards-template').content.cloneNode(true);
+const addCards = card => {
+  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
 
-  cards.querySelector('.card__title').textContent = card.name;
-  cards.querySelector('.card__img').src = card.link;
+  cardTemplate.querySelector('.card__title').textContent = card.name;
+  cardTemplate.querySelector('.card__img').src = card.link;
 
-  cardsSection.append(cards);
+  cardsSection.append(cardTemplate);
 }
 
-initialCards.forEach(addCard);
+initialCards.forEach(addCards);
