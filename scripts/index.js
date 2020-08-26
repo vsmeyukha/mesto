@@ -58,14 +58,14 @@ const togglePopup = () => {
 profileAddButton.addEventListener('click', togglePopup);
 anotherCloseButton.addEventListener('click', togglePopup);
 
-// popupTypeAddNewCard.addEventListener('click', function (evt) {
-//   console.log(evt.currentTarget);
-//   console.log(evt.target);
-// });
+// ! закрытие попапа по клику в любое место
+const closePopupOnPopupClick = (evt) => {
+  if (evt.currentTarget === evt.target) {
+    togglePopup(evt);
+  } return;
+}
 
-
-
-// ! закрытие попапа добавления карточек по клику на крест
+popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
 
 // ! рендеринг карточек
 
