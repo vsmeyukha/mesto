@@ -45,6 +45,17 @@ popupCloseButton.addEventListener('click', togglePopupClass);
 popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
 
+// ! открытие попапа добавления карточек
+
+const profileAddButton = document.querySelector('.profile__add-button');
+const popupTypeAddNewCard = document.querySelector('.popup_type_add-new-card');
+
+const OpenPopup = (popup) => {
+  popup.classList.toggle('popup_opened');
+}
+
+profileAddButton.addEventListener('click', OpenPopup(popupTypeAddNewCard));
+
 // ! рендеринг карточек
 
 const initialCards = [
