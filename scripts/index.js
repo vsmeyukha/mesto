@@ -55,9 +55,6 @@ const togglePopup = () => {
   popupTypeAddNewCard.classList.toggle('popup_opened');
 }
 
-profileAddButton.addEventListener('click', togglePopup);
-anotherCloseButton.addEventListener('click', togglePopup);
-
 // ! закрытие попапа по клику в любое место
 const closePopupOnPopupClick = (evt) => {
   if (evt.currentTarget === evt.target) {
@@ -65,6 +62,8 @@ const closePopupOnPopupClick = (evt) => {
   } return;
 }
 
+profileAddButton.addEventListener('click', togglePopup);
+anotherCloseButton.addEventListener('click', togglePopup);
 popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
 
 // ! рендеринг карточек
