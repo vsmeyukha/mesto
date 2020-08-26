@@ -45,16 +45,27 @@ popupCloseButton.addEventListener('click', togglePopupClass);
 popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 popupForm.addEventListener('submit', formSubmitHandler);
 
-// ! открытие попапа добавления карточек
+// ! открытие и закрытие попапа добавления карточек
 
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeAddNewCard = document.querySelector('.popup_type_add-new-card');
+const anotherCloseButton = document.querySelector('.another-close-button');
 
-const OpenPopup = (popup) => {
-  popup.classList.toggle('popup_opened');
+const togglePopup = () => {
+  popupTypeAddNewCard.classList.toggle('popup_opened');
 }
 
-profileAddButton.addEventListener('click', OpenPopup(popupTypeAddNewCard));
+profileAddButton.addEventListener('click', togglePopup);
+anotherCloseButton.addEventListener('click', togglePopup);
+
+// popupTypeAddNewCard.addEventListener('click', function (evt) {
+//   console.log(evt.currentTarget);
+//   console.log(evt.target);
+// });
+
+
+
+// ! закрытие попапа добавления карточек по клику на крест
 
 // ! рендеринг карточек
 
