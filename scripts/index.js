@@ -84,6 +84,7 @@ const togglePopup = () => {
   popupTypeAddNewCard.classList.toggle('popup_opened');
 }
 
+
 // ! закрытие попапа по клику в любое место
 const closePopupOnPopupClick = (evt) => {
   if (evt.currentTarget === evt.target) {
@@ -94,39 +95,6 @@ const closePopupOnPopupClick = (evt) => {
 profileAddButton.addEventListener('click', togglePopup);
 anotherCloseButton.addEventListener('click', togglePopup);
 popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
-
-// const addACard = function () {
-
-//   const card = {
-//       name: cardTitle.value,
-//       link: cardLink.value
-//   }
-//   return card;
-// }
-
-// const addToForm = function (evt) {
-//   evt.preventDefault();
-
-//   initialCards.unshift(addACard());
-
-//   togglePopup();
-// }
-
-// popupFormTypeAddCard.addEventListener('submit', addToForm);
-
-// const testconsole = function () {
-  
-//   const card = {
-//     name: profileName.textContent,
-//     link: 'https://images.unsplash.com/photo-1597287258659-0b6391c0c5f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2978&q=80'
-//   }
-//   return card;
-// }
-// initialCards.unshift(testconsole());
-
-// initialCards.unshift({ name: 'oloооlo', link: 'https://images.unsplash.com/photo-1598377706489-bb127e4ce363?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80' });
-
-// initialCards[1] = { name: 'zalupa', link: 'https://images.unsplash.com/photo-1597287258659-0b6391c0c5f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80' } // вот так обращаться к св-вам объекта, являющегося элементом массива
 
 
 // ! создание новой карточки
@@ -151,6 +119,7 @@ const addACard = evt => {
 popupFormTypeAddCard.addEventListener('submit', addACard);
 
 
+
 // ! рендеринг карточек
 
 const addCards = card => {
@@ -159,6 +128,8 @@ const addCards = card => {
   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
   // создаем переменную для лайка внутри карточки
   const like = cardTemplate.querySelector('.card__like-button');
+  // создаем переменную для иконку корзины внутри карточки
+  const bin = cardTemplate.querySelector('.card__delete-card');
 
   // текстовое содержимое заголовка карточки равно значению параметра name переменной card
   cardTemplate.querySelector('.card__title').textContent = card.name;
@@ -170,16 +141,29 @@ const addCards = card => {
     // класс подставляется и убирается по клику (event) на объект (target)
     evt.target.classList.toggle('card__like-button_active');
   }
+
+  // объявляем функцию, где прописан механизм удаления карточки
+  const deleteCard = evt => {
+    const cardToDelete = evt.target.closest('.card');
+
+    cardToDelete.remove();
+  }
+
+  // вешаем обработчик на иконку корзины
+  bin.addEventListener('click', deleteCard);
   
   //вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
-like.addEventListener('click', addLike);
+  like.addEventListener('click', addLike);
 
-  // вставляем получившуюся конструкцию в конец секции, записанной вп
+  // вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
   cardsSection.append(cardTemplate);
 }
 
+// передаем получившуюся функцию аргументом методу forEach массива initialCards, и все становится хорошо
 initialCards.forEach(addCards);
 
+
+// прописываем механизм лайка для карточек вне массива. 
 const like = cardTemplate.querySelector('.card__like-button');
 
 const addLike = evt => {
@@ -188,31 +172,3 @@ const addLike = evt => {
 }
 
 like.addEventListener('click', addLike);
-
-
-
-
-
-
-// ? это неправильный способ
-
-// const toggleLike = () => {
-//   like.classList.toggle('card__like-button_invisible');
-//   dislike.classList.toggle('card__like-button_invisible');
-// }
-
-// like.addEventListener('click', toggleLike);
-// dislike.addEventListener('click', toggleLike);
-
-// ? еще один способ, но уебищный
-
-// const cardLike = document.querySelector('.card__like');
-// const like = document.querySelector('.card__like-button');
-
-// const changeLike = (evt) => {
-//   evtTarget = evt.target;
-
-//   cardLike.src = '../images/heart_black.svg';
-// }
-
-// like.addEventListener('click', changeLike);
