@@ -4,9 +4,12 @@
 @import url(./__like/card__like.css);
 @import url(./__like-button/card__like-button.css);
 @import url(./__like-button/_active/card__like-button_active.css);
+@import url(./__delete-card/card__delete-card.css);
 
 .card {
   width: 100%;
+
+  position: relative;
 
   display: flex;
   flex-direction: column;
