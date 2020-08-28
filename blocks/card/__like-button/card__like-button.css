@@ -1,7 +1,11 @@
 .card__like-button {
+  width: 26px;
+
   border: none;
-  background-color: white;
   padding: 0;
+  background: center no-repeat url(../../../images/like.svg);
+
+  background-color: #fff;
 }
 
 .card__like-button:hover {

@@ -95,10 +95,6 @@ profileAddButton.addEventListener('click', togglePopup);
 anotherCloseButton.addEventListener('click', togglePopup);
 popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
 
-// ! добавление карточки
-
-// ? создаем одну ф-ию, чтобы прокидывать значения из форм в массив. в этой же ф-ии первой строкой превент дефолт. параметр ф-ии evt - не то же, что card для взаимодействия с массивом. а в конце ф-ии вызывается ф-ия тоггл попап. дальше навешиваем обработчик на форму второго попапа, параметром ей передается вот эта первая ф-ия. 
-
 // const addACard = function () {
 
 //   const card = {
@@ -132,17 +128,17 @@ popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
 
 // initialCards[1] = { name: 'zalupa', link: 'https://images.unsplash.com/photo-1597287258659-0b6391c0c5f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=80' } // вот так обращаться к св-вам объекта, являющегося элементом массива
 
+
 // ! создание новой карточки
 
 const popupFormTypeAddCard = document.querySelector('.popup__form_type_add-card');
 const inputCardTitle = document.querySelector('.popup__input_type_card-title');
 const inputCardLink = document.querySelector('.popup__input_type_card-link');
 const cardsSection = document.querySelector('.cards');
+const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
 
 const addACard = evt => {
   evt.preventDefault();
-  
-  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
 
   cardTemplate.querySelector('.card__title').textContent = inputCardTitle.value;
   cardTemplate.querySelector('.card__img').src = inputCardLink.value;
@@ -158,12 +154,65 @@ popupFormTypeAddCard.addEventListener('submit', addACard);
 // ! рендеринг карточек
 
 const addCards = card => {
-  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
 
+  // создаем переменную для темплейта карточки
+  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
+  // создаем переменную для лайка внутри карточки
+  const like = cardTemplate.querySelector('.card__like-button');
+
+  // текстовое содержимое заголовка карточки равно значению параметра name переменной card
   cardTemplate.querySelector('.card__title').textContent = card.name;
+  // ссылка на иллюстрации в карточке содержится в параметре link переменной card
   cardTemplate.querySelector('.card__img').src = card.link;
 
+  // объявляем функцию, где прописан механизм лайка
+  const addLike = evt => {
+    // класс подставляется и убирается по клику (event) на объект (target)
+    evt.target.classList.toggle('card__like-button_active');
+  }
+  
+  //вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
+like.addEventListener('click', addLike);
+
+  // вставляем получившуюся конструкцию в конец секции, записанной вп
   cardsSection.append(cardTemplate);
 }
 
 initialCards.forEach(addCards);
+
+const like = cardTemplate.querySelector('.card__like-button');
+
+const addLike = evt => {
+  evt.target.classList.toggle('card__like-button_active');
+  
+}
+
+like.addEventListener('click', addLike);
+
+
+
+
+
+
+// ? это неправильный способ
+
+// const toggleLike = () => {
+//   like.classList.toggle('card__like-button_invisible');
+//   dislike.classList.toggle('card__like-button_invisible');
+// }
+
+// like.addEventListener('click', toggleLike);
+// dislike.addEventListener('click', toggleLike);
+
+// ? еще один способ, но уебищный
+
+// const cardLike = document.querySelector('.card__like');
+// const like = document.querySelector('.card__like-button');
+
+// const changeLike = (evt) => {
+//   evtTarget = evt.target;
+
+//   cardLike.src = '../images/heart_black.svg';
+// }
+
+// like.addEventListener('click', changeLike);
