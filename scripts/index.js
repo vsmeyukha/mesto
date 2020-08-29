@@ -86,7 +86,7 @@ const togglePopup = () => {
 
 
 // ! закрытие попапа по клику в любое место
-const closePopupOnPopupClick = (evt) => {
+const closePopupOnPopupClick = evt => {
   if (evt.currentTarget === evt.target) {
     togglePopup(evt);
   } return;
@@ -119,6 +119,16 @@ const addACard = evt => {
 popupFormTypeAddCard.addEventListener('submit', addACard);
 
 
+// ! прописываем механизм лайка для карточек вне массива. 
+const like = cardTemplate.querySelector('.card__like-button');
+
+const addLike = evt => {
+  evt.target.classList.toggle('card__like-button_active');
+  
+}
+
+like.addEventListener('click', addLike);
+
 
 // ! рендеринг карточек
 
@@ -128,26 +138,39 @@ const addCards = card => {
   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
   // создаем переменную для лайка внутри карточки
   const like = cardTemplate.querySelector('.card__like-button');
-  // создаем переменную для иконку корзины внутри карточки
+  // создаем переменную для иконки корзины внутри карточки
   const bin = cardTemplate.querySelector('.card__delete-card');
 
   // текстовое содержимое заголовка карточки равно значению параметра name переменной card
   cardTemplate.querySelector('.card__title').textContent = card.name;
-  // ссылка на иллюстрации в карточке содержится в параметре link переменной card
+  // ссылка на иллюстрацию в карточке содержится в параметре link переменной card
   cardTemplate.querySelector('.card__img').src = card.link;
 
-  // объявляем функцию, где прописан механизм лайка
+  // ! объявляем функцию, где прописан механизм лайка
   const addLike = evt => {
-    // класс подставляется и убирается по клику (event) на объект (target)
+    // класс подставляется и убирается по клику (event) на объект (evt.target)
     evt.target.classList.toggle('card__like-button_active');
   }
 
-  // объявляем функцию, где прописан механизм удаления карточки
+  // ! объявляем функцию, где прописан механизм удаления карточки
   const deleteCard = evt => {
     const cardToDelete = evt.target.closest('.card');
 
     cardToDelete.remove();
   }
+
+  // создаем переменную для попапа с большим фото
+const photoPopup = document.querySelector('.photo-popup');
+  
+  // ! объявляем функцию для открытия большого фото
+  const openBigPhoto = () => {
+    photoPopup.querySelector('.photo-popup__image').src = card.link;
+    photoPopup.querySelector('.photo-popup__caption').textContent = card.name;
+
+    photoPopup.classList.toggle('photo-popup_opened');
+  }
+  
+  cardTemplate.querySelector('.card__img').addEventListener('click', openBigPhoto);
 
   // вешаем обработчик на иконку корзины
   bin.addEventListener('click', deleteCard);
@@ -162,13 +185,26 @@ const addCards = card => {
 // передаем получившуюся функцию аргументом методу forEach массива initialCards, и все становится хорошо
 initialCards.forEach(addCards);
 
+// ! объявляем функцию открытия/закрытия большого фото
 
-// прописываем механизм лайка для карточек вне массива. 
-const like = cardTemplate.querySelector('.card__like-button');
-
-const addLike = evt => {
-  evt.target.classList.toggle('card__like-button_active');
+// создаем переменную для попапа с большим фото
+const photoPopup = document.querySelector('.photo-popup');
   
+const openBigPhoto = () => {
+  photoPopup.querySelector('.photo-popup__image').src = inputCardLink.value;
+  photoPopup.querySelector('.photo-popup__caption').textContent = inputCardTitle.value;
+
+  photoPopup.classList.toggle('photo-popup_opened');
 }
 
-like.addEventListener('click', addLike);
+cardTemplate.querySelector('.card__img').addEventListener('click', openBigPhoto);
+photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', openBigPhoto);
+
+const closeBigPhoto = evt => {
+  if (evt.currentTarget === evt.target) {
+    photoPopup.classList.toggle('photo-popup_opened');
+    console.log(evt.target);
+  } return;
+}
+
+photoPopup.addEventListener('click', closeBigPhoto);
