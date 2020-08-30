@@ -11,7 +11,7 @@ const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia
 const popupFormTypeUserInfo = popupTypeProfileEdit.querySelector('.popup__form_type_user-info');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
-const togglePopupClass = function () {
+const togglePopupClass = () => {
   if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
     popupInputTypeName.value = profileName.textContent;
     popupInputTypeRegalia.value = profileRegalia.textContent;
@@ -20,7 +20,7 @@ const togglePopupClass = function () {
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
-const closePopupOnClick = function (event) {
+const closePopupOnClick = event => {
   if (event.target !== event.currentTarget) {
     return;
   } togglePopupClass(event);
@@ -28,7 +28,7 @@ const closePopupOnClick = function (event) {
 
 // ! ЗНАЧЕНИЯ, ВВЕДЕННЫЕ В ФОРМЫ, ПЕРЕДАЮТСЯ В БЛОК PROFILE
 
-function formSubmitHandler (evt) {
+const formSubmitHandler = evt => {
   evt.preventDefault(); 
 
   profileName.textContent = popupInputTypeName.value;
