@@ -48,7 +48,7 @@ const closePopupOnClick = event => {
 }
 
 // * объявляем функцию, которая передает введенные в формы значения на обработку
-// возможно, тоже допилить, чтоюы она юзалась обоими попапами. типа, равенства перенести в ф-ию-обработчик, и обработчику уже передавать вот ету функцию без персонификации
+// возможно, тоже допилить, чтобы она юзалась обоими попапами. типа, равенства перенести в ф-ию-обработчик, и обработчику уже передавать вот ету функцию без персонификации
 const formSubmitHandler = evt => {
   evt.preventDefault(); 
 
@@ -56,6 +56,10 @@ const formSubmitHandler = evt => {
   profileRegalia.textContent = popupInputTypeRegalia.value;
 
   togglePopupClass(popupTypeProfileEdit);
+}
+
+const renderCard = () => {
+  
 }
 
 // * объявляем функцию для создания новой карточки вне массива
@@ -81,7 +85,7 @@ const openBigPhoto = () => {
   photoPopup.querySelector('.photo-popup__image').src = inputCardLink.value;
   photoPopup.querySelector('.photo-popup__caption').textContent = inputCardTitle.value;
 
-  photoPopup.classList.toggle('photo-popup_opened');
+  togglePopupClass(photoPopup);
 }
 
 // * объявляем функцию для закрытия попапа с большим фото по клику на фон
@@ -125,13 +129,13 @@ popupFormTypeAddCard.addEventListener('submit', addACard);
 like.addEventListener('click', addLike);
 
 // * вешаем обработчик на фотку в карточке вне массива, чтобы по клику по фотке открывался попап с большой фоткой
-cardTemplate.querySelector('.card__img').addEventListener('click', openBigPhoto);
+cardTemplate.querySelector('.card__img').addEventListener('click', () => openBigPhoto(photoPopup));
 
 // * вешаем обработчик на кнопку закрытия большого попапа
 photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', openBigPhoto);
 
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
-photoPopup.addEventListener('click', closeBigPhoto);
+photoPopup.addEventListener('click', closePopupOnClick);
 
 
 // ! МАССИВ КАРТОЧЕК
@@ -188,9 +192,7 @@ const addCards = card => {
 
   // ! объявляем функцию, где прописан механизм удаления карточки
   const deleteCard = evt => {
-    const cardToDelete = evt.target.closest('.card');
-
-    cardToDelete.remove();
+    evt.target.closest('.card').remove();
   }
 
   // создаем переменную для попапа с большим фото
