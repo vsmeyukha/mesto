@@ -35,8 +35,8 @@ const like = cardTemplate.querySelector('.card__like-button');
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
 // допилить, чтобы эта функция работала с обоими одинаковыми попапами
-const togglePopupClass = () => {
-  popupTypeProfileEdit.classList.toggle('popup_opened');
+const togglePopupClass = popup => {
+  popup.classList.toggle('popup_opened');
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
@@ -44,7 +44,7 @@ const togglePopupClass = () => {
 const closePopupOnClick = event => {
   if (event.target !== event.currentTarget) {
     return;
-  } togglePopupClass(event);
+  } togglePopupClass(event.target);
 }
 
 // * объявляем функцию, которая передает введенные в формы значения на обработку
@@ -55,19 +55,7 @@ const formSubmitHandler = evt => {
   profileName.textContent = popupInputTypeName.value;
   profileRegalia.textContent = popupInputTypeRegalia.value;
 
-  togglePopupClass();
-}
-
-// * объявляем функцию, которой не должно быть - она дублирует функцию открытия и закрытия первого попапа.
-const togglePopup = () => {
-  popupTypeAddNewCard.classList.toggle('popup_opened');
-}
-
-// * также функция, которой не должно быть = закрытие второго попапа по клику в любое место
-const closePopupOnPopupClick = evt => {
-  if (evt.currentTarget === evt.target) {
-    togglePopup(evt);
-  } return;
+  togglePopupClass(popupTypeProfileEdit);
 }
 
 // * объявляем функцию для создания новой карточки вне массива
@@ -79,7 +67,7 @@ const addACard = evt => {
 
   cardsSection.prepend(cardTemplate);
   
-  togglePopup();
+  togglePopupClass(popupTypeAddNewCard);
 }
 
 // * объявляем функцию для лайканья карточек вне массива
@@ -100,7 +88,6 @@ const openBigPhoto = () => {
 const closeBigPhoto = evt => {
   if (evt.currentTarget === evt.target) {
     photoPopup.classList.toggle('photo-popup_opened'); // ? вот тут, можа бы, переиспользовать код из функции выше. типа равенства вынести из той функции, а ту функцию просто подставить сюда, вместо того, чтобы еще раз ту же строку кода писать
-    console.log(evt.target);
   } return;
 }
 
@@ -109,27 +96,27 @@ const closeBigPhoto = evt => {
 
 // * вешаем обработчики на кнопку edit в блоке profile и кнопку закрытия открытого попапа
 // ? вот тут получилось заебись. реально сэкономим кучу кода благодаря вынесению конкретных условий в обработчик, 
-profileEditButton.addEventListener('click', function () {
+profileEditButton.addEventListener('click', () => {
   if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
     popupInputTypeName.value = profileName.textContent;
     popupInputTypeRegalia.value = profileRegalia.textContent;
   }
-  togglePopupClass();
+  togglePopupClass(popupTypeProfileEdit);
 });
-popupCloseButton.addEventListener('click', togglePopupClass);
+popupCloseButton.addEventListener('click', () => togglePopupClass(popupTypeProfileEdit));
 
-// * вешаем обработчик событий на фон попапа. по клику на фон попап закрывается.
+// * вешаем обработчик событий на фон первого попапа. по клику на фон попап закрывается.
 popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 
 // * вешаем обработчик на форму первого попапа - попап по клику на кнопку "сохранить" закрывается
 popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
 
 // * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается второй попап
-profileAddButton.addEventListener('click', togglePopup);
+profileAddButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на крестик во втором попапе
-anotherCloseButton.addEventListener('click', togglePopup);
+anotherCloseButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на второй попап - по клику на фон попап закрывается
-popupTypeAddNewCard.addEventListener('click', closePopupOnPopupClick);
+popupTypeAddNewCard.addEventListener('click', closePopupOnClick);
 
 // * вешаем обработчик на форму второго попапа. по клику на кнопку "сохранить" добавляется новая карточка
 popupFormTypeAddCard.addEventListener('submit', addACard);
