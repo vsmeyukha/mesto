@@ -30,6 +30,7 @@ const photoPopup = document.querySelector('.photo-popup');
 // * шаблон карточки
 const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
 const like = cardTemplate.querySelector('.card__like-button');
+const bin = cardTemplate.querySelector('.card__delete-card');
 
 // ! ФУНКЦИИ
 
@@ -58,19 +59,25 @@ const formSubmitHandler = evt => {
   togglePopupClass(popupTypeProfileEdit);
 }
 
-const renderCard = () => {
-  
+const renderCard = (cardImg, cardTitle) => {
+  cardTemplate.querySelector('.card__img').src = cardImg;
+  cardTemplate.querySelector('.card__title').textContent = cardTitle;
+
+  cardsSection.prepend(cardTemplate);
 }
 
 // * объявляем функцию для создания новой карточки вне массива
 const addACard = evt => {
   evt.preventDefault();
 
-  cardTemplate.querySelector('.card__title').textContent = inputCardTitle.value;
-  cardTemplate.querySelector('.card__img').src = inputCardLink.value;
+  // cardTemplate.querySelector('.card__title').textContent = inputCardTitle.value;
+  // cardTemplate.querySelector('.card__img').src = inputCardLink.value;
 
-  cardsSection.prepend(cardTemplate);
+  const cardTitle = inputCardTitle.value;
+  const cardImg = inputCardLink.value;
   
+  renderCard(cardImg, cardTitle);
+
   togglePopupClass(popupTypeAddNewCard);
 }
 
@@ -80,20 +87,12 @@ const addLike = evt => {
   
 }
 
-// * объявляем функцию для открытия/закрытия попапа с большим фото
-const openBigPhoto = () => {
-  photoPopup.querySelector('.photo-popup__image').src = inputCardLink.value;
-  photoPopup.querySelector('.photo-popup__caption').textContent = inputCardTitle.value;
-
-  togglePopupClass(photoPopup);
+// * объявляем функцию, где прописан механизм удаления карточки
+const deleteCard = evt => {
+  evt.target.closest('.card').remove();
 }
 
-// * объявляем функцию для закрытия попапа с большим фото по клику на фон
-const closeBigPhoto = evt => {
-  if (evt.currentTarget === evt.target) {
-    photoPopup.classList.toggle('photo-popup_opened'); // ? вот тут, можа бы, переиспользовать код из функции выше. типа равенства вынести из той функции, а ту функцию просто подставить сюда, вместо того, чтобы еще раз ту же строку кода писать
-  } return;
-}
+// ! Максим, я, честно говоря, плохо понял, что нужно сделать с новой функцией renderCard и как изменить функции addCards и addACard. Поясните еще раз поподробнее, пожалуйста. 
 
 
 // ! ОБРАБОТЧИКИ
@@ -129,13 +128,22 @@ popupFormTypeAddCard.addEventListener('submit', addACard);
 like.addEventListener('click', addLike);
 
 // * вешаем обработчик на фотку в карточке вне массива, чтобы по клику по фотке открывался попап с большой фоткой
-cardTemplate.querySelector('.card__img').addEventListener('click', () => openBigPhoto(photoPopup));
+cardTemplate.querySelector('.card__img').addEventListener('click', () => {
+
+  photoPopup.querySelector('.photo-popup__image').src = inputCardLink.value;
+  photoPopup.querySelector('.photo-popup__caption').textContent = inputCardTitle.value;
+
+  togglePopupClass(photoPopup);
+});
 
 // * вешаем обработчик на кнопку закрытия большого попапа
-photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', openBigPhoto);
+photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => togglePopupClass(photoPopup));
 
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
 photoPopup.addEventListener('click', closePopupOnClick);
+
+  // * вешаем обработчик на иконку корзины
+  bin.addEventListener('click', deleteCard);
 
 
 // ! МАССИВ КАРТОЧЕК
@@ -172,49 +180,48 @@ const initialCards = [
 
 const addCards = card => {
 
-  // создаем переменную для темплейта карточки
+  // * создаем переменную для темплейта карточки
   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
-  // создаем переменную для лайка внутри карточки
+  // * создаем переменную для лайка внутри карточки
   const like = cardTemplate.querySelector('.card__like-button');
-  // создаем переменную для иконки корзины внутри карточки
+  // * создаем переменную для иконки корзины внутри карточки
   const bin = cardTemplate.querySelector('.card__delete-card');
 
-  // текстовое содержимое заголовка карточки равно значению параметра name переменной card
+  // * текстовое содержимое заголовка карточки равно значению параметра name переменной card
   cardTemplate.querySelector('.card__title').textContent = card.name;
-  // ссылка на иллюстрацию в карточке содержится в параметре link переменной card
+  // * ссылка на иллюстрацию в карточке содержится в параметре link переменной card
   cardTemplate.querySelector('.card__img').src = card.link;
 
-  // ! объявляем функцию, где прописан механизм лайка
+  // * объявляем функцию, где прописан механизм лайка
   const addLike = evt => {
     // класс подставляется и убирается по клику (event) на объект (evt.target)
     evt.target.classList.toggle('card__like-button_active');
   }
 
-  // ! объявляем функцию, где прописан механизм удаления карточки
+  // * объявляем функцию, где прописан механизм удаления карточки
   const deleteCard = evt => {
     evt.target.closest('.card').remove();
   }
 
-  // создаем переменную для попапа с большим фото
+  // * создаем переменную для попапа с большим фото
 const photoPopup = document.querySelector('.photo-popup');
   
-  // ! объявляем функцию для открытия большого фото
-  const openBigPhoto = () => {
+  // * вешаем обработчик на картинку в массиве, по клику на картинку открывается большое фото
+  cardTemplate.querySelector('.card__img').addEventListener('click', () => {
+
     photoPopup.querySelector('.photo-popup__image').src = card.link;
     photoPopup.querySelector('.photo-popup__caption').textContent = card.name;
 
-    photoPopup.classList.toggle('photo-popup_opened');
-  }
-  
-  cardTemplate.querySelector('.card__img').addEventListener('click', openBigPhoto);
+    togglePopupClass(photoPopup);
+  });
 
-  // вешаем обработчик на иконку корзины
+  // * вешаем обработчик на иконку корзины
   bin.addEventListener('click', deleteCard);
   
-  //вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
+  // * вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
   like.addEventListener('click', addLike);
 
-  // вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
+  // * вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
   cardsSection.append(cardTemplate);
 }
 
