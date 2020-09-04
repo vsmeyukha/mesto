@@ -37,13 +37,11 @@ const bin = cardTemplate.querySelector('.card__delete-card');
 // ? БЛОК PROFILE И ИЗМЕНЕНИЕ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ
 
 // * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
-// допилить, чтобы эта функция работала с обоими одинаковыми попапами
 const togglePopupClass = popup => {
   popup.classList.toggle('popup_opened');
 }
 
 // * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
-// то же самое - должна работать с двумя одинаковыми попапами
 const closePopupOnClick = event => {
   if (event.target !== event.currentTarget) {
     return;
@@ -51,7 +49,6 @@ const closePopupOnClick = event => {
 }
 
 // * объявляем функцию, которая передает введенные в формы значения на обработку
-// возможно, тоже допилить, чтобы она юзалась обоими попапами. типа, равенства перенести в ф-ию-обработчик, и обработчику уже передавать вот ету функцию без персонификации
 const formSubmitHandler = evt => {
   evt.preventDefault();
 
@@ -63,26 +60,20 @@ const formSubmitHandler = evt => {
 
 // ? ДОБАВЛЕНИЕ И ИЗМЕНЕНИЕ КАРТОЧЕК
 
-// todo избавиться от переобъявления cardTemplate в каждой функции
-// todo 
-// todo 
-// todo 
-// todo 
-
 // * создание карточки
-const addCards = (cardImg, cardTitle) => {
+const addCards = (name, link) => {
 
   // * создаем переменную для темплейта карточки
   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
   // * создаем переменную для лайка внутри карточки
   const like = cardTemplate.querySelector('.card__like-button');
   // * создаем переменную для иконки корзины внутри карточки
-  const bin = cardTemplate.cloneNode(true).querySelector('.card__delete-card');
+  const bin = cardTemplate.querySelector('.card__delete-card');
 
   // * текстовое содержимое заголовка карточки равно значению параметра name переменной card
-  cardTemplate.querySelector('.card__title').textContent = cardTitle;
+  cardTemplate.querySelector('.card__title').textContent = name;
   // * ссылка на иллюстрацию в карточке содержится в параметре link переменной card
-  cardTemplate.querySelector('.card__img').src = cardImg;
+  cardTemplate.querySelector('.card__img').src = link;
 
   // * объявляем функцию, где прописан механизм лайка
   const addLike = evt => {
@@ -95,14 +86,11 @@ const addCards = (cardImg, cardTitle) => {
     evt.target.closest('.card').remove();
   }
 
-  // * создаем переменную для попапа с большим фото
-const photoPopup = document.querySelector('.photo-popup');
-  
   // * вешаем обработчик на картинку в массиве, по клику на картинку открывается большое фото
   cardTemplate.querySelector('.card__img').addEventListener('click', () => {
 
-    photoPopup.querySelector('.photo-popup__image').src = card.link;
-    photoPopup.querySelector('.photo-popup__caption').textContent = card.name;
+    photoPopup.querySelector('.photo-popup__image').src = link;
+    photoPopup.querySelector('.photo-popup__caption').textContent = name;
 
     togglePopupClass(photoPopup);
   });
@@ -118,40 +106,9 @@ const photoPopup = document.querySelector('.photo-popup');
 }
 
 // * рендеринг карточки
-const renderCard = card => {
-  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
-  cardTemplate.querySelector('.card__img').src = card.link;
-  cardTemplate.querySelector('.card__title').textContent = card.name;
-
-  
-  cardsSection.append(addCards());
+const renderCard = (name, link) => {
+  cardsSection.prepend(addCards(name, link));
 }
-
-// // * объявляем функцию для создания новой карточки вне массива
-// // const addACard = evt => {
-// //   evt.preventDefault();
-
-// //   // cardTemplate.querySelector('.card__title').textContent = inputCardTitle.value;
-// //   // cardTemplate.querySelector('.card__img').src = inputCardLink.value;
-
-// //   const cardImg = inputCardLink.value;
-// //   const cardTitle = inputCardTitle.value;
-  
-// //   renderCard(cardImg, cardTitle);
-
-// //   togglePopupClass(popupTypeAddNewCard);
-// // }
-
-// // * объявляем функцию для лайканья карточек вне массива
-// const addLike = evt => {
-//   evt.target.classList.toggle('card__like-button_active');
-  
-// }
-
-// // * объявляем функцию, где прописан механизм удаления карточки
-// const deleteCard = evt => {
-//   evt.target.closest('.card').remove();
-// }
 
 // ! ОБРАБОТЧИКИ
 
@@ -173,6 +130,8 @@ popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 // * вешаем обработчик на форму первого попапа - попап по клику на кнопку "сохранить" закрывается
 popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
 
+// ? ОБРАБОТЧИКИ ДОБАВЛЕНИЯ КАРТОЧКИ И ВТОРОГО ПОПАПА
+
 // * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается второй попап
 profileAddButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на крестик во втором попапе
@@ -187,29 +146,16 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
   cardImg = document.querySelector('.popup__input_type_card-link').value;
   cardTitle = document.querySelector('.popup__input_type_card-title').value;
 
-  renderCard;
+  renderCard(cardTitle, cardImg);
+
+  togglePopupClass(popupTypeAddNewCard);
 });
-
-// // * вешаем обработчик на лайк карточки вне массива
-// like.addEventListener('click', addLike);
-
-// // * вешаем обработчик на фотку в карточке вне массива, чтобы по клику по фотке открывался попап с большой фоткой
-// cardTemplate.querySelector('.card__img').addEventListener('click', () => {
-
-//   photoPopup.querySelector('.photo-popup__image').src = inputCardLink.value;
-//   photoPopup.querySelector('.photo-popup__caption').textContent = inputCardTitle.value;
-
-//   togglePopupClass(photoPopup);
-// });
 
 // * вешаем обработчик на кнопку закрытия большого попапа
 photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => togglePopupClass(photoPopup));
 
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
 photoPopup.addEventListener('click', closePopupOnClick);
-
-//   // * вешаем обработчик на иконку корзины
-//   bin.addEventListener('click', deleteCard);
 
 
 // ! МАССИВ КАРТОЧЕК
@@ -241,5 +187,6 @@ const initialCards = [
   }
 ];
 
-// передаем получившуюся функцию аргументом методу forEach массива initialCards, и все становится хорошо
-initialCards.forEach(renderCard);
+initialCards.forEach(card => {
+  renderCard(card.name, card.link);
+});
