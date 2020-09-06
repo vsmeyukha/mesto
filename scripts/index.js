@@ -32,6 +32,7 @@ const cardTemplate = document.querySelector('#cards-template').content.cloneNode
 const like = cardTemplate.querySelector('.card__like-button');
 const bin = cardTemplate.querySelector('.card__delete-card');
 
+
 // ! ФУНКЦИИ
 
 // ? БЛОК PROFILE И ИЗМЕНЕНИЕ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ
