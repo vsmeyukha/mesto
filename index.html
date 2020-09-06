@@ -43,8 +43,8 @@
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form popup__form_type_user-info" name="user-info">
             <fieldset class="popup__fieldset popup__fieldset_type_user-info">
-              <input type="text" class="popup__input popup__input_type_name" placeholder="Жак-Ив Кусто" name="user-name" required>
-              <input type="text" class="popup__input popup__input_type_regalia" placeholder="Исследователь океана" name="user-regalia" required>
+              <input type="text" class="popup__input popup__input_type_name" placeholder="Жак-Ив Кусто" name="user-name" required minlength="2" maxlength="40">
+              <input type="text" class="popup__input popup__input_type_regalia" placeholder="Исследователь океана" name="user-regalia" required minlength="2" maxlength="200">
             </fieldset>
             <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
           </form>
@@ -59,7 +59,7 @@
           <h3 class="popup__title">Новое место</h3>
           <form class="popup__form popup__form_type_add-card" name="card-info">
             <fieldset class="popup__fieldset popup__fieldset_type_card-info">
-              <input type="text" class="popup__input popup__input_type_card-title" placeholder="Название" name="card-title" required>
+              <input type="text" class="popup__input popup__input_type_card-title" placeholder="Название" name="card-title" required maxlength="30">
               <input type="url" class="popup__input popup__input_type_card-link" placeholder="Ссылка на картинку" name="card-link" required>
             </fieldset>
             <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
