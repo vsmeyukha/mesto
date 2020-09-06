@@ -191,3 +191,7 @@ const initialCards = [
 initialCards.forEach(card => {
   renderCard(card.name, card.link);
 });
+
+
+// ! ВАЛИДАЦИЯ ФОРМ
+
