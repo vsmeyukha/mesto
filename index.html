@@ -41,10 +41,12 @@
       <div class="popup__container">
         <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
-          <form class="popup__form popup__form_type_user-info" name="user-info">
+          <form class="popup__form popup__form_type_user-info" name="user-info" novalidate>
             <fieldset class="popup__fieldset popup__fieldset_type_user-info">
-              <input type="text" class="popup__input popup__input_type_name" placeholder="Жак-Ив Кусто" name="user-name" required minlength="2" maxlength="40">
-              <input type="text" class="popup__input popup__input_type_regalia" placeholder="Исследователь океана" name="user-regalia" required minlength="2" maxlength="200">
+              <input type="text" class="popup__input popup__input_type_name popup__input_type_error" placeholder="Жак-Ив Кусто" name="user-name" required minlength="2" maxlength="40" id="user-name">
+              <span class="popup__input-error" id="user-name-error"></span>
+              <input type="text" class="popup__input popup__input_type_regalia popup__input_type_error" placeholder="Исследователь океана" name="user-regalia" required minlength="2" maxlength="200" id="user-regalia">
+              <span class="popup__input-error" id="user-regalia-error"></span>
             </fieldset>
             <button type="submit" class="popup__submit popup__submit_disabled" value="Сохранить" name="submit">Сохранить</button>
           </form>
@@ -57,10 +59,12 @@
       <div class="popup__container">
         <button class="popup__close-button another-close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
           <h3 class="popup__title">Новое место</h3>
-          <form class="popup__form popup__form_type_add-card" name="card-info">
+          <form class="popup__form popup__form_type_add-card" name="card-info" novalidate>
             <fieldset class="popup__fieldset popup__fieldset_type_card-info">
-              <input type="text" class="popup__input popup__input_type_card-title" placeholder="Название" name="card-title" required maxlength="30">
-              <input type="url" class="popup__input popup__input_type_card-link" placeholder="Ссылка на картинку" name="card-link" required>
+              <input type="text" class="popup__input popup__input_type_card-title popup__input_type_error" placeholder="Название картинки" name="card-title" required maxlength="30" id="card-title">
+              <span class="popup__input-error" id="card-title-error"></span>
+              <input type="url" class="popup__input popup__input_type_card-link popup__input_type_error" placeholder="Ссылка на картинку" name="card-link" required id="card-link">
+              <span class="popup__input-error" id="card-link-error"></span>
             </fieldset>
             <button type="submit" class="popup__submit popup__submit_disabled" value="Сохранить" name="submit">Сохранить</button>
           </form>
