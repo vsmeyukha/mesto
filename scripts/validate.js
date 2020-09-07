@@ -53,7 +53,6 @@ const hasInvalidInput = (inputList) => {
   // ? проходим по этому массиву методом some
   return inputList.some((inputEl) => {
     // ? Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся функция hasInvalidInput вернёт true
-
     return !inputEl.validity.valid;
   })
 };
@@ -65,9 +64,12 @@ const toggleButtonState = (inputList, buttonEl) => {
   if (hasInvalidInput(inputList)) {
     // ? функция сделает кнопку неактивной
     buttonEl.classList.add('popup__submit_disabled');
+    buttonEl.disabled = true;
+
   } else {
     // ? в противном случае сделает кнопку активной
     buttonEl.classList.remove('popup__submit_disabled');
+    buttonEl.disabled = false;
   }
 };
 
@@ -96,18 +98,16 @@ const setEventListeners = formEl => {
 
 // * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим имя объекта
 
-const allClasses = {
+const enableValidation = (allClasses = {
   form: '.popup__form',
   input: '.popup__input',
   submitButton: '.popup__submit',
-  submitButtonDisabled: 'popup__submit_disabled',
-  inputTypeError: 'popup__input_type_error',
-  errorText: 'popup__input-error_active'
-} 
-
-const enableValidation = () => {
+  submitButtonDisabled: '.popup__submit_disabled',
+  inputTypeError: '.popup__input_type_error',
+  errorText: '.popup__input-error_active'
+}) => {
   // ? Находим все формы с указанным классом в DOM, делаем из них массив методом Array.from
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
+  const formList = Array.from(document.querySelectorAll(allClasses.form));
 
   // ? Перебираем полученный массив
   formList.forEach(formEl => {
@@ -125,4 +125,11 @@ const enableValidation = () => {
 // ! ОБРАБОТЧИКИ
 
 // * Вызовем функцию isValid на каждый ввод символа
-formInput.addEventListener('input', enableValidation);
+enableValidation(allClasses = {
+  form: '.popup__form',
+  input: '.popup__input',
+  submitButton: '.popup__submit',
+  submitButtonDisabled: '.popup__submit_disabled',
+  inputTypeError: '.popup__input_type_error',
+  errorText: '.popup__input-error_active'
+});

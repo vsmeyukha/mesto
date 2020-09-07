@@ -32,7 +32,6 @@ const cardTemplate = document.querySelector('#cards-template').content.cloneNode
 const like = cardTemplate.querySelector('.card__like-button');
 const bin = cardTemplate.querySelector('.card__delete-card');
 
-
 // ! ФУНКЦИИ
 
 // ? БЛОК PROFILE И ИЗМЕНЕНИЕ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ
@@ -111,16 +110,34 @@ const renderCard = (name, link) => {
   cardsSection.prepend(addCards(name, link));
 }
 
+// ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПОВ ПО КЛИКУ НА ESC
+const closePopupOnEscPress = () => {
+  const popupList = Array.from(document.querySelectorAll('.the-popup'));
+
+  popupList.forEach(popup => {
+    document.addEventListener('keydown', evt => {
+      if (popup.classList.contains('popup_opened') && evt.key === 'Escape') {
+        togglePopupClass(popup);
+      }
+    })
+  })
+}
+
+closePopupOnEscPress();
+
+
 // ! ОБРАБОТЧИКИ
 
 // ? ОБРАБОТЧИКИ ИЗМЕНЕНИЯ ПРОФИЛЯ И ПЕРВОГО ПОПАПА
 
 // * вешаем обработчики на кнопку edit в блоке profile и кнопку закрытия открытого попапа
+
+if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
+  popupInputTypeName.value = profileName.textContent;
+  popupInputTypeRegalia.value = profileRegalia.textContent;
+}
 profileEditButton.addEventListener('click', () => {
-  if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
-    popupInputTypeName.value = profileName.textContent;
-    popupInputTypeRegalia.value = profileRegalia.textContent;
-  }
+
   togglePopupClass(popupTypeProfileEdit);
 });
 popupCloseButton.addEventListener('click', () => togglePopupClass(popupTypeProfileEdit));

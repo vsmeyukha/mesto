@@ -36,7 +36,7 @@
       <p class="footer__info">&COPY; 2020 Mesto Russia</p>
     </footer>
 
-    <div class="popup popup_type_profile-edit">
+    <div class="popup the-popup popup_type_profile-edit">
       
       <div class="popup__container">
         <button class="popup__close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
@@ -48,13 +48,13 @@
               <input type="text" class="popup__input popup__input_type_regalia" placeholder="Исследователь океана" name="user-regalia" required minlength="2" maxlength="200" id="user-regalia">
               <span class="popup__input-error" id="user-regalia-error"></span>
             </fieldset>
-            <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
+            <button type="submit" class="popup__submit" value="Сохранить" name="submit" disabled>Сохранить</button>
           </form>
       </div>
 
     </div>
 
-    <div class="popup popup_type_add-new-card">
+    <div class="popup the-popup popup_type_add-new-card">
       
       <div class="popup__container">
         <button class="popup__close-button another-close-button" type="button"><img src="./images/close-icon.svg" alt="закрыть попап" class="popup__close-img"></button>
@@ -66,13 +66,13 @@
               <input type="url" class="popup__input popup__input_type_card-link" placeholder="Ссылка на картинку" name="card-link" required id="card-link">
               <span class="popup__input-error" id="card-link-error"></span>
             </fieldset>
-            <button type="submit" class="popup__submit" value="Сохранить" name="submit">Сохранить</button>
+            <button type="submit" class="popup__submit" value="Сохранить" name="submit" disabled>Сохранить</button>
           </form>
       </div>
 
     </div>
 
-    <div class="photo-popup">
+    <div class="photo-popup the-popup">
       <figure class="photo-popup__container">
         <button class="photo-popup__close-button"></button>
         <img src="./images/london.jpg" alt="" class="photo-popup__image">
