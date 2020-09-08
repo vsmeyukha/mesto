@@ -27,11 +27,6 @@ const cardsSection = document.querySelector('.cards');
 // * попап с большой фоткой
 const photoPopup = document.querySelector('.photo-popup');
 
-// * шаблон карточки
-const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
-const like = cardTemplate.querySelector('.card__like-button');
-const bin = cardTemplate.querySelector('.card__delete-card');
-
 // ! ФУНКЦИИ
 
 // ? БЛОК PROFILE И ИЗМЕНЕНИЕ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ
@@ -119,7 +114,7 @@ const closePopupOnEscPress = () => {
       if (popup.classList.contains('popup_opened') && evt.key === 'Escape') {
         togglePopupClass(popup);
       }
-    })
+    });
   })
 }
 
