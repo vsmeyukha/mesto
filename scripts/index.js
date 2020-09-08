@@ -1,10 +1,10 @@
-// todo все сломалось из-за объекта allClasses
+// todo все сломалось из-за объекта allClasses - done
 
-// todo togglebutton в попапе профиля
+// todo togglebutton в попапе профиля - done
 
-// todo значения из профиля не залезают в попап при изменении этих значений и выходе не по сабмиту
+// todo значения из профиля не залезают в попап при изменении этих значений и выходе не по сабмиту - done
 
-// todo togglebutton в попапе карточки
+// todo togglebutton в попапе карточки - done
 
 // todo анимация закрытия
 
@@ -35,6 +35,7 @@ const popupCloseButton = document.querySelector('.popup__close-button');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 const popupFormTypeUserInfo = document.querySelector('.popup__form_type_user-info');
+const popupSubmitButton = document.querySelector('.popup__submit');
 
 // * попап добавления новой карточки
 const popupTypeAddNewCard = document.querySelector('.popup_type_add-new-card');
@@ -49,9 +50,6 @@ const cardsSection = document.querySelector('.cards');
 // * попап с большой фоткой
 const photoPopup = document.querySelector('.photo-popup');
 
-// !  какая-то дичь
-const inputList = Array.from(document.querySelectorAll('.popup__input'));
-// !  какая-то дичь
 
 
 // ! ФУНКЦИИ
@@ -158,10 +156,11 @@ profileEditButton.addEventListener('click', () => {
   if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
     popupInputTypeName.value = profileName.textContent;
     popupInputTypeRegalia.value = profileRegalia.textContent;
+
+    popupSubmitButton.classList.remove('popup__submit_disabled');
+    popupSubmitButton.disabled = false;
   }
-  // !  какая-то дичь
-  toggleButtonState(inputList, document.querySelector('.popup__submit'));
-  // !  какая-то дичь
+
   togglePopupClass(popupTypeProfileEdit);
 });
 popupCloseButton.addEventListener('click', () => togglePopupClass(popupTypeProfileEdit));
@@ -185,6 +184,8 @@ popupTypeAddNewCard.addEventListener('click', closePopupOnClick);
 popupFormTypeAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
 
+  const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
+
   cardImg = document.querySelector('.popup__input_type_card-link').value;
   cardTitle = document.querySelector('.popup__input_type_card-title').value;
 
@@ -193,6 +194,9 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
   togglePopupClass(popupTypeAddNewCard);
 
   popupFormTypeAddCard.reset();
+  
+  submitButton.classList.add('popup__submit_disabled');
+  submitButton.disabled = true;
   // ! осталось добавить сюда тогглбаттонстейт, чтобы кнопарь тоже работал
 });
 

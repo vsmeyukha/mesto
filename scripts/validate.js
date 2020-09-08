@@ -8,18 +8,10 @@ const allClasses = {
   form: '.popup__form',
   input: '.popup__input',
   submitButton: '.popup__submit',
-  submitButtonDisabled: '.popup__submit_disabled',
-  inputTypeError: '.popup__input_type_error',
-  errorText: '.popup__input-error_active'
+  submitButtonDisabled: 'popup__submit_disabled',
+  inputTypeError: 'popup__input_type_error',
+  errorText: 'popup__input-error_active'
 }
-
-// * Вынесем все необходимые элементы формы в константы
-const theForm = document.querySelector(allClasses.form);
-const formInput = document.querySelector(allClasses.input);
-
-// * объявляем переменную для спана с ошибкой - чекается по айдишнику с применением шаблонной строки
-const formError = theForm.querySelector(`#${formInput.id}-error`);
-
 
 // ! ФУНКЦИИ
 
@@ -63,6 +55,10 @@ const hasInvalidInput = (inputList) => {
   // ? проходим по этому массиву методом some
   return inputList.some((inputEl) => {
     // ? Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся функция hasInvalidInput вернёт true
+    // console.log(inputList);
+    // console.log(inputEl);
+    // console.log(inputEl.validity);
+    // ! выводятся инпуты с жак-ивом кусто из первого попапа и с названием картинки из второго. у обоих valid: false, потому что valueMissing: true. хотя у жак ива кусто есть значение, а у второго нет. хз, короче.
     return !inputEl.validity.valid;
   })
 };
@@ -81,6 +77,10 @@ const toggleButtonState = (inputList, buttonEl) => {
     buttonEl.classList.remove(allClasses.submitButtonDisabled);
     buttonEl.disabled = false;
   }
+  console.log(inputList);
+  console.log(buttonEl);
+  console.log(allClasses.submitButtonDisabled);
+
 };
 
 // * функция, которая добавляет обработчик всем полям
@@ -104,6 +104,7 @@ const setEventListeners = formEl => {
       toggleButtonState(inputList, buttonEl);
     });
   });
+  console.log(buttonEl);
 };
 
 // * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим имя объекта
@@ -122,10 +123,13 @@ const enableValidation = () => {
     // ? Для каждой формы вызываем функцию setEventListeners, передав ей элемент формы
     setEventListeners(formEl);
   });
+  console.log(formList);
+  console.log(allClasses.form);
 };
 
 
 // ! ОБРАБОТЧИКИ
 
 // * Вызовем функцию isValid на каждый ввод символа
-enableValidation(allClasses);
+enableValidation();
+console.log(enableValidation);

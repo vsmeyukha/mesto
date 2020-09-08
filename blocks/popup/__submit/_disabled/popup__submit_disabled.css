@@ -3,6 +3,8 @@
   color: black;
   border: 1px solid black;
   opacity: .2;
+
+  margin-top: 30px;
 }
 
 .popup__submit_disabled:hover {
