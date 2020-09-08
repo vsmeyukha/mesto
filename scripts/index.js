@@ -1,3 +1,25 @@
+// todo все сломалось из-за объекта allClasses
+
+// todo togglebutton в попапе профиля
+
+// todo значения из профиля не залезают в попап при изменении этих значений и выходе не по сабмиту
+
+// todo togglebutton в попапе карточки
+
+// todo анимация закрытия
+
+// todo поковыряться с классами открытых попапов, чтобы не было класса, созданного специально для открытия/закрытия попапа по нажатию на
+
+// todo сделать очищение форм в попапе добавления карточки - done
+
+// todo пофиксить верстку попапа. когда все спаны активны, верстка так себе
+
+
+
+
+
+
+
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
 // * блок Profile
@@ -26,6 +48,11 @@ const cardsSection = document.querySelector('.cards');
 
 // * попап с большой фоткой
 const photoPopup = document.querySelector('.photo-popup');
+
+// !  какая-то дичь
+const inputList = Array.from(document.querySelectorAll('.popup__input'));
+// !  какая-то дичь
+
 
 // ! ФУНКЦИИ
 
@@ -123,36 +150,38 @@ closePopupOnEscPress();
 
 // ! ОБРАБОТЧИКИ
 
-// ? ОБРАБОТЧИКИ ИЗМЕНЕНИЯ ПРОФИЛЯ И ПЕРВОГО ПОПАПА
+// ? ОБРАБОТЧИКИ ИЗМЕНЕНИЯ ПРОФИЛЯ И ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 
 // * вешаем обработчики на кнопку edit в блоке profile и кнопку закрытия открытого попапа
 
-if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
-  popupInputTypeName.value = profileName.textContent;
-  popupInputTypeRegalia.value = profileRegalia.textContent;
-}
 profileEditButton.addEventListener('click', () => {
-
+  if (popupTypeProfileEdit.classList.contains('popup_opened') === false) {
+    popupInputTypeName.value = profileName.textContent;
+    popupInputTypeRegalia.value = profileRegalia.textContent;
+  }
+  // !  какая-то дичь
+  toggleButtonState(inputList, document.querySelector('.popup__submit'));
+  // !  какая-то дичь
   togglePopupClass(popupTypeProfileEdit);
 });
 popupCloseButton.addEventListener('click', () => togglePopupClass(popupTypeProfileEdit));
 
-// * вешаем обработчик событий на фон первого попапа. по клику на фон попап закрывается.
+// * вешаем обработчик событий на фон попапа редактирования профиля. по клику на фон попап закрывается.
 popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
 
-// * вешаем обработчик на форму первого попапа - попап по клику на кнопку "сохранить" закрывается
+// * вешаем обработчик на форму попапа редактирования профиля - попап по клику на кнопку "сохранить" закрывается
 popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
 
-// ? ОБРАБОТЧИКИ ДОБАВЛЕНИЯ КАРТОЧКИ И ВТОРОГО ПОПАПА
+// ? ОБРАБОТЧИКИ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ
 
-// * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается второй попап
+// * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается попап добавления карточки
 profileAddButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
-// * вешаем обработчик на крестик во втором попапе
+// * вешаем обработчик на крестик в попапе добавления карточки
 anotherCloseButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
-// * вешаем обработчик на второй попап - по клику на фон попап закрывается
+// * вешаем обработчик на попап добавления карточки - по клику на фон попап закрывается
 popupTypeAddNewCard.addEventListener('click', closePopupOnClick);
 
-// * вешаем обработчик на форму второго попапа. по клику на кнопку "сохранить" добавляется новая карточка
+// * вешаем обработчик на форму попапа добавления карточки. по клику на кнопку "сохранить" добавляется новая карточка
 popupFormTypeAddCard.addEventListener('submit', evt => {
   evt.preventDefault();
 
@@ -162,6 +191,9 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
   renderCard(cardTitle, cardImg);
 
   togglePopupClass(popupTypeAddNewCard);
+
+  popupFormTypeAddCard.reset();
+  // ! осталось добавить сюда тогглбаттонстейт, чтобы кнопарь тоже работал
 });
 
 // * вешаем обработчик на кнопку закрытия большого попапа
