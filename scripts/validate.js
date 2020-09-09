@@ -37,15 +37,15 @@ const hideInputError = (formEl, inputEl, allClasses) => {
 };
 
 // * Функция, которая проверяет валидность поля
-const isValid = (formEl /* переменная для формы */, inputEl /* переменная для поля ввода */) => {
+const isValid = (formEl /* переменная для формы */, inputEl /* переменная для поля ввода */, allClasses) => {
   // ? в if мы передаем уже не конкретный инпут с конкретным классом, а переменную
   if (!inputEl.validity.valid) {
     // ? Если поле не проходит валидацию, покажем ошибку
     // ? showInputError теперь получает параметром форму, в которой находится проверяемое поле, и само это поле
-    showInputError(formEl, inputEl, inputEl.validationMessage, allSelectorClasses);
+    showInputError(formEl, inputEl, inputEl.validationMessage, allClasses);
   } else {
     // ? hideInputError теперь получает параметром форму, в которой находится проверяемое поле, и само это поле
-    hideInputError(formEl, inputEl, allSelectorClasses);
+    hideInputError(formEl, inputEl, allClasses);
   }
 };
 
@@ -85,16 +85,16 @@ const setEventListeners = (formEl, allClasses) => {
   const buttonEl = formEl.querySelector(allClasses.submitButton);
 
   // ? Вызовем toggleButtonState, чтобы не ждать ввода данных в поля
-  toggleButtonState(inputList, buttonEl, allSelectorClasses);
+  toggleButtonState(inputList, buttonEl, allClasses);
 
   // ? Обходим все элементы полученного массива
   inputList.forEach((inputEl) => {
     // ? на каждый инпут вешаем обработчик события input, то бишь каждого клаца по клавишам
     inputEl.addEventListener('input', () => {
       // ? Внутри колбэка вызываем функцию isValid, передав ей форму и проверяемый элемент
-      isValid(formEl, inputEl);
+      isValid(formEl, inputEl, allClasses);
       // ? и затем вызываем функцию toggleButtonState, передавая ей массив полей и кнопку
-      toggleButtonState(inputList, buttonEl, allSelectorClasses);
+      toggleButtonState(inputList, buttonEl, allClasses);
     });
   });
 };
