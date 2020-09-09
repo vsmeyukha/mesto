@@ -4,7 +4,7 @@
 // ! ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
 // * вынесем отдельным объектом все используемые классы
-const allClasses = {
+const allSelectorClasses = {
   form: '.popup__form',
   input: '.popup__input',
   submitButton: '.popup__submit',
@@ -16,7 +16,7 @@ const allClasses = {
 // ! ФУНКЦИИ
 
 // * Функция, которая добавляет класс с ошибкой
-const showInputError = (formEl, inputEl, errorMessage) => {
+const showInputError = (formEl, inputEl, errorMessage, allClasses) => {
   // ? получаем спан с текстом ошибки внутри функции
   const errorSpan = formEl.querySelector(`#${inputEl.id}-error`);
   // ? красим форму в красный
@@ -28,7 +28,7 @@ const showInputError = (formEl, inputEl, errorMessage) => {
 };
 
 // * Функция, которая удаляет класс с ошибкой
-const hideInputError = (formEl, inputEl) => {
+const hideInputError = (formEl, inputEl, allClasses) => {
   const errorSpan = formEl.querySelector(`#${inputEl.id}-error`);
   inputEl.classList.remove(allClasses.inputTypeError);
   errorSpan.classList.remove(allClasses.errorText);
@@ -42,10 +42,10 @@ const isValid = (formEl /* переменная для формы */, inputEl /*
   if (!inputEl.validity.valid) {
     // ? Если поле не проходит валидацию, покажем ошибку
     // ? showInputError теперь получает параметром форму, в которой находится проверяемое поле, и само это поле
-    showInputError(formEl, inputEl, inputEl.validationMessage);
+    showInputError(formEl, inputEl, inputEl.validationMessage, allSelectorClasses);
   } else {
     // ? hideInputError теперь получает параметром форму, в которой находится проверяемое поле, и само это поле
-    hideInputError(formEl, inputEl);
+    hideInputError(formEl, inputEl, allSelectorClasses);
   }
 };
 
@@ -55,17 +55,14 @@ const hasInvalidInput = (inputList) => {
   // ? проходим по этому массиву методом some
   return inputList.some((inputEl) => {
     // ? Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся функция hasInvalidInput вернёт true
-    // console.log(inputList);
-    // console.log(inputEl);
-    // console.log(inputEl.validity);
-    // ! выводятся инпуты с жак-ивом кусто из первого попапа и с названием картинки из второго. у обоих valid: false, потому что valueMissing: true. хотя у жак ива кусто есть значение, а у второго нет. хз, короче.
+
     return !inputEl.validity.valid;
-  })
+  });
 };
 
 // * Функция, которая принимает массив полей ввода и элемент кнопки, состояние которой нужно менять
 
-const toggleButtonState = (inputList, buttonEl) => {
+const toggleButtonState = (inputList, buttonEl, allClasses) => {
   // ? Если есть хотя бы один невалидный инпут
   if (hasInvalidInput(inputList)) {
     // ? функция сделает кнопку неактивной
@@ -77,22 +74,18 @@ const toggleButtonState = (inputList, buttonEl) => {
     buttonEl.classList.remove(allClasses.submitButtonDisabled);
     buttonEl.disabled = false;
   }
-  console.log(inputList);
-  console.log(buttonEl);
-  console.log(allClasses.submitButtonDisabled);
-
 };
 
 // * функция, которая добавляет обработчик всем полям
 
-const setEventListeners = formEl => {
+const setEventListeners = (formEl, allClasses) => {
   // ? Находим все поля внутри формы, сделаем из них массив методом Array.from
   const inputList = Array.from(formEl.querySelectorAll(allClasses.input));
 
   const buttonEl = formEl.querySelector(allClasses.submitButton);
 
   // ? Вызовем toggleButtonState, чтобы не ждать ввода данных в поля
-  toggleButtonState(inputList, buttonEl);
+  toggleButtonState(inputList, buttonEl, allSelectorClasses);
 
   // ? Обходим все элементы полученного массива
   inputList.forEach((inputEl) => {
@@ -101,15 +94,14 @@ const setEventListeners = formEl => {
       // ? Внутри колбэка вызываем функцию isValid, передав ей форму и проверяемый элемент
       isValid(formEl, inputEl);
       // ? и затем вызываем функцию toggleButtonState, передавая ей массив полей и кнопку
-      toggleButtonState(inputList, buttonEl);
+      toggleButtonState(inputList, buttonEl, allSelectorClasses);
     });
   });
-  console.log(buttonEl);
 };
 
-// * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим имя объекта
+// * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим параметром переменную, его обозначающую
 
-const enableValidation = () => {
+const enableValidation = allClasses => {
   // ? Находим все формы с указанным классом в DOM, делаем из них массив методом Array.from
   const formList = Array.from(document.querySelectorAll(allClasses.form));
 
@@ -120,16 +112,13 @@ const enableValidation = () => {
       evt.preventDefault();
     });
 
-    // ? Для каждой формы вызываем функцию setEventListeners, передав ей элемент формы
-    setEventListeners(formEl);
+    // ? Для каждой формы вызываем функцию setEventListeners, передав ей элемент формы и объект с классами
+    setEventListeners(formEl, allSelectorClasses);
   });
-  console.log(formList);
-  console.log(allClasses.form);
 };
 
 
 // ! ОБРАБОТЧИКИ
 
 // * Вызовем функцию isValid на каждый ввод символа
-enableValidation();
-console.log(enableValidation);
+enableValidation(allSelectorClasses);
