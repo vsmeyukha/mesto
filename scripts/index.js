@@ -1,3 +1,8 @@
+// ! ИМПОРТИРУЕМ ДАННЫЕ ИЗ МОДУЛЕЙ
+
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
 // * блок Profile
