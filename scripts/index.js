@@ -64,53 +64,55 @@ const formSubmitHandler = evt => {
 // ? ДОБАВЛЕНИЕ И ИЗМЕНЕНИЕ КАРТОЧЕК
 
 // * создание карточки
-const addCards = (name, link) => {
+// const addCards = (name, link) => {
 
-  // * создаем переменную для темплейта карточки
-  const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
-  // * создаем переменную для лайка внутри карточки
-  const like = cardTemplate.querySelector('.card__like-button');
-  // * создаем переменную для иконки корзины внутри карточки
-  const bin = cardTemplate.querySelector('.card__delete-card');
+//   // * создаем переменную для темплейта карточки
+//   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
+//   // * создаем переменную для лайка внутри карточки
+//   const like = cardTemplate.querySelector('.card__like-button');
+//   // * создаем переменную для иконки корзины внутри карточки
+//   const bin = cardTemplate.querySelector('.card__delete-card');
 
-  // * текстовое содержимое заголовка карточки равно значению параметра name переменной card
-  cardTemplate.querySelector('.card__title').textContent = name;
-  // * ссылка на иллюстрацию в карточке содержится в параметре link переменной card
-  cardTemplate.querySelector('.card__img').src = link;
+//   // * текстовое содержимое заголовка карточки равно значению параметра name переменной card
+//   cardTemplate.querySelector('.card__title').textContent = name;
+//   // * ссылка на иллюстрацию в карточке содержится в параметре link переменной card
+//   cardTemplate.querySelector('.card__img').src = link;
 
-  // * объявляем функцию, где прописан механизм лайка
-  const addLike = evt => {
-    // класс подставляется и убирается по клику (event) на объект (evt.target)
-    evt.target.classList.toggle('card__like-button_active');
-  }
+//   // * объявляем функцию, где прописан механизм лайка
+//   const addLike = evt => {
+//     // класс подставляется и убирается по клику (event) на объект (evt.target)
+//     evt.target.classList.toggle('card__like-button_active');
+//   }
 
-  // * объявляем функцию, где прописан механизм удаления карточки
-  const deleteCard = evt => {
-    evt.target.closest('.card').remove();
-  }
+//   // * объявляем функцию, где прописан механизм удаления карточки
+//   const deleteCard = evt => {
+//     evt.target.closest('.card').remove();
+//   }
 
-  // * вешаем обработчик на картинку в массиве, по клику на картинку открывается большое фото
-  cardTemplate.querySelector('.card__img').addEventListener('click', () => {
+//   // * вешаем обработчик на картинку в массиве, по клику на картинку открывается большое фото
+//   cardTemplate.querySelector('.card__img').addEventListener('click', () => {
 
-    photoPopup.querySelector('.photo-popup__image').src = link;
-    photoPopup.querySelector('.photo-popup__caption').textContent = name;
+//     photoPopup.querySelector('.photo-popup__image').src = link;
+//     photoPopup.querySelector('.photo-popup__caption').textContent = name;
 
-    togglePopupClass(photoPopup);
-  });
+//     togglePopupClass(photoPopup);
+//   });
 
-  // * вешаем обработчик на иконку корзины
-  bin.addEventListener('click', deleteCard);
+//   // * вешаем обработчик на иконку корзины
+//   bin.addEventListener('click', deleteCard);
   
-  // * вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
-  like.addEventListener('click', addLike);
+//   // * вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
+//   like.addEventListener('click', addLike);
 
-  // * вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
-  return cardTemplate;
-}
+//   // * вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
+//   return cardTemplate;
+// }
+
+const createNewCard = (...arg) => new Card(...arg);
 
 // * рендеринг карточки
 const renderCard = (name, link) => {
-  cardsSection.prepend(addCards(name, link));
+  cardsSection.prepend(createNewCard());
 }
 
 // ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПОВ ПО КЛИКУ НА ESC
