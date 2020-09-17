@@ -2,8 +2,19 @@
 
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import * as data from './utils.js';
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+
+// * вынесем отдельным объектом все используемые классы
+const allSelectorClasses = {
+  form: '.popup__form',
+  input: '.popup__input',
+  submitButton: '.popup__submit',
+  submitButtonDisabled: 'popup__submit_disabled',
+  inputTypeError: 'popup__input_type_error',
+  errorText: 'popup__input-error_active'
+}
 
 // * блок Profile
 const profile = document.querySelector('.profile');
@@ -37,20 +48,6 @@ const templateCard = document.querySelector('#cards-template');
 
 // ! ФУНКЦИИ
 
-// ? БЛОК PROFILE И ИЗМЕНЕНИЕ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ
-
-// * объявляем функцию, которая вставляет и удаляет из HTML класс popup_opened
-const togglePopupClass = popup => {
-  popup.classList.toggle('popup_opened');
-}
-
-// * объявляем функцию, которая закрывает попап по клику в любое место на экране, кроме самого попапа (класс эл-та popup__container)
-const closePopupOnClick = event => {
-  if (event.target !== event.currentTarget) {
-    return;
-  } togglePopupClass(event.target);
-}
-
 // * объявляем функцию, которая передает введенные в формы значения на обработку
 const formSubmitHandler = evt => {
   evt.preventDefault();
@@ -58,76 +55,16 @@ const formSubmitHandler = evt => {
   profileName.textContent = popupInputTypeName.value;
   profileRegalia.textContent = popupInputTypeRegalia.value;
 
-  togglePopupClass(popupTypeProfileEdit);
+  data.togglePopupClass(popupTypeProfileEdit);
 }
 
-// ? ДОБАВЛЕНИЕ И ИЗМЕНЕНИЕ КАРТОЧЕК
+// ? РЕНДЕРИНГ КАРТОЧКИ
 
-// * создание карточки
-// const addCards = (name, link) => {
-
-//   // * создаем переменную для темплейта карточки
-//   const cardTemplate = document.querySelector('#cards-template').content.cloneNode(true);
-//   // * создаем переменную для лайка внутри карточки
-//   const like = cardTemplate.querySelector('.card__like-button');
-//   // * создаем переменную для иконки корзины внутри карточки
-//   const bin = cardTemplate.querySelector('.card__delete-card');
-
-//   // * текстовое содержимое заголовка карточки равно значению параметра name переменной card
-//   cardTemplate.querySelector('.card__title').textContent = name;
-//   // * ссылка на иллюстрацию в карточке содержится в параметре link переменной card
-//   cardTemplate.querySelector('.card__img').src = link;
-
-//   // * объявляем функцию, где прописан механизм лайка
-//   const addLike = evt => {
-//     // класс подставляется и убирается по клику (event) на объект (evt.target)
-//     evt.target.classList.toggle('card__like-button_active');
-//   }
-
-//   // * объявляем функцию, где прописан механизм удаления карточки
-//   const deleteCard = evt => {
-//     evt.target.closest('.card').remove();
-//   }
-
-//   // * вешаем обработчик на картинку в массиве, по клику на картинку открывается большое фото
-//   cardTemplate.querySelector('.card__img').addEventListener('click', () => {
-
-//     photoPopup.querySelector('.photo-popup__image').src = link;
-//     photoPopup.querySelector('.photo-popup__caption').textContent = name;
-
-//     togglePopupClass(photoPopup);
-//   });
-
-//   // * вешаем обработчик на иконку корзины
-//   bin.addEventListener('click', deleteCard);
-  
-//   // * вешаем обработчик на кнопку. ВАЖНО: это происходит внутри функции создания карточек из массива
-//   like.addEventListener('click', addLike);
-
-//   // * вставляем получившуюся конструкцию в конец секции, записанной в переменную cardsSection
-//   return cardTemplate;
-// }
-
-
-// * рендеринг карточки
 const renderCard = (newCard) => {
   cardsSection.prepend(newCard);
 }
 
-// ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПОВ ПО КЛИКУ НА ESC
-const closePopupOnEscPress = () => {
-  const popupList = Array.from(document.querySelectorAll('.the-popup'));
-
-  popupList.forEach(popup => {
-    document.addEventListener('keydown', evt => {
-      if (popup.classList.contains('popup_opened') && evt.key === 'Escape') {
-        togglePopupClass(popup);
-      }
-    });
-  })
-}
-
-closePopupOnEscPress();
+data.closePopupOnEscPress();
 
 
 // ! ОБРАБОТЧИКИ
@@ -145,12 +82,12 @@ profileEditButton.addEventListener('click', () => {
     popupSubmitButton.disabled = false;
   }
 
-  togglePopupClass(popupTypeProfileEdit);
+  data.togglePopupClass(popupTypeProfileEdit);
 });
-popupCloseButton.addEventListener('click', () => togglePopupClass(popupTypeProfileEdit));
+popupCloseButton.addEventListener('click', () => data.togglePopupClass(popupTypeProfileEdit));
 
 // * вешаем обработчик событий на фон попапа редактирования профиля. по клику на фон попап закрывается.
-popupTypeProfileEdit.addEventListener('click', closePopupOnClick);
+popupTypeProfileEdit.addEventListener('click', data.closePopupOnClick);
 
 // * вешаем обработчик на форму попапа редактирования профиля - попап по клику на кнопку "сохранить" закрывается
 popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
@@ -158,11 +95,11 @@ popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
 // ? ОБРАБОТЧИКИ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ
 
 // * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается попап добавления карточки
-profileAddButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
+profileAddButton.addEventListener('click', () => data.togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на крестик в попапе добавления карточки
-anotherCloseButton.addEventListener('click', () => togglePopupClass(popupTypeAddNewCard));
+anotherCloseButton.addEventListener('click', () => data.togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на попап добавления карточки - по клику на фон попап закрывается
-popupTypeAddNewCard.addEventListener('click', closePopupOnClick);
+popupTypeAddNewCard.addEventListener('click', data.closePopupOnClick);
 
 // * вешаем обработчик на форму попапа добавления карточки. по клику на кнопку "сохранить" добавляется новая карточка
 popupFormTypeAddCard.addEventListener('submit', evt => {
@@ -173,11 +110,11 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
   const cardImg = popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value;
   const cardTitle = popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value;
 
-  const newCard = new Card(cardTitle, cardImg, templateCard);
+  const newCard = new Card(cardTitle, cardImg, templateCard, photoPopup);
 
   renderCard(newCard.render());
 
-  togglePopupClass(popupTypeAddNewCard);
+  data.togglePopupClass(popupTypeAddNewCard);
 
   popupFormTypeAddCard.reset();
   
@@ -187,10 +124,10 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
 });
 
 // * вешаем обработчик на кнопку закрытия большого попапа
-photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => togglePopupClass(photoPopup));
+photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => data.togglePopupClass(photoPopup));
 
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
-photoPopup.addEventListener('click', closePopupOnClick);
+photoPopup.addEventListener('click', data.closePopupOnClick);
 
 
 // ! МАССИВ КАРТОЧЕК
@@ -223,6 +160,14 @@ const initialCards = [
 ];
 
 initialCards.forEach(card => {
-  const newCard = new Card(card.name, card.link, templateCard);
+  const newCard = new Card(card.name, card.link, templateCard, photoPopup);
   renderCard(newCard.render());
 });
+
+
+
+const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
+const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
+
+validUserInfo.enableValidation();
+validAddCard.enableValidation();
