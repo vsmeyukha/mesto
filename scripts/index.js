@@ -24,8 +24,6 @@ const popupSubmitButton = document.querySelector('.popup__submit');
 const popupTypeAddNewCard = document.querySelector('.popup_type_add-new-card');
 const anotherCloseButton = document.querySelector('.another-close-button'); 
 const popupFormTypeAddCard = document.querySelector('.popup__form_type_add-card');
-const inputCardTitle = document.querySelector('.popup__input_type_card-title');
-const inputCardLink = document.querySelector('.popup__input_type_card-link');
 
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
@@ -33,6 +31,8 @@ const cardsSection = document.querySelector('.cards');
 // * попап с большой фоткой
 const photoPopup = document.querySelector('.photo-popup');
 
+// * темплейт карточки
+const templateCard = document.querySelector('#cards-template');
 
 
 // ! ФУНКЦИИ
@@ -108,11 +108,10 @@ const formSubmitHandler = evt => {
 //   return cardTemplate;
 // }
 
-const createNewCard = (...arg) => new Card(...arg);
 
 // * рендеринг карточки
-const renderCard = (name, link) => {
-  cardsSection.prepend(createNewCard());
+const renderCard = (newCard) => {
+  cardsSection.prepend(newCard);
 }
 
 // ! ОТКРЫТИЕ И ЗАКРЫТИЕ ПОПАПОВ ПО КЛИКУ НА ESC
@@ -171,10 +170,12 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
 
   const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
 
-  cardImg = document.querySelector('.popup__input_type_card-link').value;
-  cardTitle = document.querySelector('.popup__input_type_card-title').value;
+  const cardImg = popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value;
+  const cardTitle = popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value;
 
-  renderCard(cardTitle, cardImg);
+  const newCard = new Card(cardTitle, cardImg, templateCard);
+
+  renderCard(newCard.render());
 
   togglePopupClass(popupTypeAddNewCard);
 
@@ -222,5 +223,6 @@ const initialCards = [
 ];
 
 initialCards.forEach(card => {
-  renderCard(card.name, card.link);
+  const newCard = new Card(card.name, card.link, templateCard);
+  renderCard(newCard.render());
 });
