@@ -61,8 +61,9 @@ const formSubmitHandler = evt => {
 
 // ? РЕНДЕРИНГ КАРТОЧКИ
 
-const renderCard = (newCard) => {
-  cardsSection.prepend(newCard);
+const renderCard = (card) => {
+  const newCard = new Card(card, templateCard, photoPopup);
+  cardsSection.prepend(newCard.render());
 }
 
 data.closePopupOnEscPress();
@@ -103,17 +104,17 @@ anotherCloseButton.addEventListener('click', () => data.togglePopupClass(popupTy
 popupTypeAddNewCard.addEventListener('click', data.closePopupOnClick);
 
 // * вешаем обработчик на форму попапа добавления карточки. по клику на кнопку "сохранить" добавляется новая карточка
-popupFormTypeAddCard.addEventListener('submit', evt => {
+popupFormTypeAddCard.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
 
-  const cardImg = popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value;
-  const cardTitle = popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value;
+  const card = {
+    name: popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value,
+    link: popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value
+}
 
-  const newCard = new Card(cardTitle, cardImg, templateCard, photoPopup);
-
-  renderCard(newCard.render());
+  renderCard(card);
 
   data.togglePopupClass(popupTypeAddNewCard);
 
@@ -121,7 +122,6 @@ popupFormTypeAddCard.addEventListener('submit', evt => {
   
   submitButton.classList.add('popup__submit_disabled');
   submitButton.disabled = true;
-  // ! осталось добавить сюда тогглбаттонстейт, чтобы кнопарь тоже работал
 });
 
 // * вешаем обработчик на кнопку закрытия большого попапа
@@ -130,12 +130,10 @@ photoPopup.querySelector('.photo-popup__close-button').addEventListener('click',
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
 photoPopup.addEventListener('click', data.closePopupOnClick);
 
+// * МАССИВ
 consts.initialCards.forEach(card => {
-  const newCard = new Card(card.name, card.link, templateCard, photoPopup);
-  renderCard(newCard.render());
+  renderCard(card);
 });
-
-
 
 const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
 const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);

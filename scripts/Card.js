@@ -3,9 +3,8 @@ import * as data from './utils.js';
 export default class Card {
   // static _cardTemplate = document.querySelector('#cards-template').content;
 
-  constructor(name, link, cardTemplate, photoPopup) {
-    this._name = name;
-    this._link = link;
+  constructor(data, cardTemplate, photoPopup) {
+    this._data = data;
     this._cardTemplate = cardTemplate;
     this._photoPopup = photoPopup;
     
@@ -22,12 +21,12 @@ export default class Card {
   render = () => {
     
     this._visibleCard = this._cardTemplate.content.cloneNode(true); 
-    this._visibleCard.querySelector('.card__title').textContent = this._name;
-    this._visibleCard.querySelector('.card__img').src = this._link;
+    this._visibleCard.querySelector('.card__title').textContent = this._data.name;
+    this._visibleCard.querySelector('.card__img').src = this._data.link;
 
     this._visibleCard.querySelector('.card__img').addEventListener('click', () => {
-      this._photoPopup.querySelector('.photo-popup__image').src = this._link;
-      this._photoPopup.querySelector('.photo-popup__caption').textContent = this._name;
+      this._photoPopup.querySelector('.photo-popup__image').src = this._data.link;
+      this._photoPopup.querySelector('.photo-popup__caption').textContent = this._data.name;
   
       data.togglePopupClass(this._photoPopup);
     })
