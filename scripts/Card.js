@@ -25,6 +25,7 @@ export default class Card {
   _setEventListeners = () => {
     this._visibleCard.querySelector('.card__img').addEventListener('click', () => {
       this._photoPopup.querySelector('.photo-popup__image').src = this._data.link;
+      this._photoPopup.querySelector('.photo-popup__image').alt = this._data.name;
       this._photoPopup.querySelector('.photo-popup__caption').textContent = this._data.name;
   
       data.togglePopupClass(this._photoPopup);
@@ -41,22 +42,3 @@ export default class Card {
     return this._visibleCard;
   };
 }
-
-// По заданию класс Card должен содержать приватные методы: метод который работает с разметкой, и метод который устанавливает слушатели событий, а также один публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки. Сейчас все эти функции записаны в один публичный метод render.
-// Следуя принципу единственной ответственности для нас важно, чтобы методы выполняли только одну задачу, поэтому необходимо разделить данный код метода render на несколько обособленных, согласно заданию: 
-// 1. возвращение разметки карточки
-// 2. установка слушателей
-// 3. возвращение полностью работоспособного и наполненного данными элемента карточки
-// Например:
-// _getTemplate() {
-// клонирует содержимое тега template и возвращает этот элемент разметки оператором return
-// }
-// _setEventListeners() {
-// устанавливает обработчики: 
-// ...addEventListener('click', ...);
-// ...addEventListener('click', ...);
-// ...addEventListener('click', ...);
-// };
-// getVisibleCard() {
-// публичный метод, возвращающий представление карточки (внутри него происходит вызов двух предыдущих методов и наполнение карточки содержимым)
-// };
