@@ -63,7 +63,7 @@ const formSubmitHandler = evt => {
 
 const renderCard = (card) => {
   const newCard = new Card(card, templateCard, photoPopup);
-  cardsSection.prepend(newCard.render());
+  cardsSection.prepend(newCard.getVisibleCard());
 }
 
 data.closePopupOnEscPress();
