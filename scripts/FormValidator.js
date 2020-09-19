@@ -39,9 +39,9 @@ export default class FormValidator {
   };
 
   // * Функция, которая проверяет, чтобы все поля были валидны
-  _hasInvalidInput = (_inputList) => {
+  _hasInvalidInput = () => {
     // ? проходим по этому массиву методом some
-    return _inputList.some((inputEl) => {
+    return this._inputList.some((inputEl) => {
       // ? Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся функция hasInvalidInput вернёт true
 
       return !inputEl.validity.valid;
@@ -49,38 +49,38 @@ export default class FormValidator {
   };
 
   // * Функция, которая принимает массив полей ввода и элемент кнопки, состояние которой нужно менять
-  _toggleButtonState = (_inputList, _buttonEl) => {
+  _toggleButtonState = () => {
     // ? Если есть хотя бы один невалидный инпут
-    if (this._hasInvalidInput(_inputList)) {
+    if (this._hasInvalidInput()) {
       // ? функция сделает кнопку неактивной
-      _buttonEl.classList.add(this._allClasses.submitButtonDisabled);
-      _buttonEl.disabled = true;
+      this._buttonEl.classList.add(this._allClasses.submitButtonDisabled);
+      this._buttonEl.disabled = true;
 
     } else {
       // ? в противном случае сделает кнопку активной
-      _buttonEl.classList.remove(this._allClasses.submitButtonDisabled);
-      _buttonEl.disabled = false;
+      this._buttonEl.classList.remove(this._allClasses.submitButtonDisabled);
+      this._buttonEl.disabled = false;
     }
 };
 
   // * функция, которая добавляет обработчик всем полям
   _setEventListeners = () => {
     // ? Находим все поля внутри формы, сделаем из них массив методом Array.from
-    const _inputList = Array.from(this._popupForm.querySelectorAll(this._allClasses.input));
+    this._inputList = Array.from(this._popupForm.querySelectorAll(this._allClasses.input));
   
-    const _buttonEl = this._popupForm.querySelector(this._allClasses.submitButton);
+    this._buttonEl = this._popupForm.querySelector(this._allClasses.submitButton);
   
     // ? Вызовем toggleButtonState, чтобы не ждать ввода данных в поля
-    this._toggleButtonState(_inputList, _buttonEl);
+    this._toggleButtonState();
   
     // ? Обходим все элементы полученного массива
-    _inputList.forEach((inputEl) => {
+    this._inputList.forEach((inputEl) => {
       // ? на каждый инпут вешаем обработчик события input, то бишь каждого клаца по клавишам
       inputEl.addEventListener('input', () => {
         // ? Внутри колбэка вызываем функцию isValid, передав ей форму и проверяемый элемент
         this._isValid(inputEl);
         // ? и затем вызываем функцию toggleButtonState, передавая ей массив полей и кнопку
-        this._toggleButtonState(_inputList, _buttonEl);
+        this._toggleButtonState();
       });
     });
   };
