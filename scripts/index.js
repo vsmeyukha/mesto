@@ -2,8 +2,9 @@
 
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
-import * as data from './utils.js';
-import * as consts from './consts.js'
+import * as functions from './utils.js';
+import * as consts from './consts.js';
+import Section from './Section.js';
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
@@ -56,18 +57,21 @@ const formSubmitHandler = evt => {
   profileName.textContent = popupInputTypeName.value;
   profileRegalia.textContent = popupInputTypeRegalia.value;
 
-  data.togglePopupClass(popupTypeProfileEdit);
+  functions.togglePopupClass(popupTypeProfileEdit);
 }
 
 // ? РЕНДЕРИНГ КАРТОЧКИ
 
-const renderCard = (card) => {
-  const newCard = new Card(card, templateCard, photoPopup);
-  cardsSection.prepend(newCard.getVisibleCard());
-}
+const initialCardList = new Section({
+  items: consts.initialCards,
+  renderer: (item) => {
+    const newCard = new Card(item, templateCard, photoPopup);
+    const visibleCard = newCard.getVisibleCard();
+    initialCardList.addItem(visibleCard);
+  }
+}, cardsSection);
 
-data.closePopupOnEscPress();
-
+functions.closePopupOnEscPress();
 
 // ! ОБРАБОТЧИКИ
 
@@ -84,12 +88,12 @@ profileEditButton.addEventListener('click', () => {
     popupSubmitButton.disabled = false;
   }
 
-  data.togglePopupClass(popupTypeProfileEdit);
+  functions.togglePopupClass(popupTypeProfileEdit);
 });
-popupCloseButton.addEventListener('click', () => data.togglePopupClass(popupTypeProfileEdit));
+popupCloseButton.addEventListener('click', () => functions.togglePopupClass(popupTypeProfileEdit));
 
 // * вешаем обработчик событий на фон попапа редактирования профиля. по клику на фон попап закрывается.
-popupTypeProfileEdit.addEventListener('click', data.closePopupOnClick);
+popupTypeProfileEdit.addEventListener('click', functions.closePopupOnClick);
 
 // * вешаем обработчик на форму попапа редактирования профиля - попап по клику на кнопку "сохранить" закрывается
 popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
@@ -97,11 +101,11 @@ popupFormTypeUserInfo.addEventListener('submit', formSubmitHandler);
 // ? ОБРАБОТЧИКИ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ
 
 // * вешаем обработчик на кнопку с плюсиком в блоке profile. по клику на кнопку открывается попап добавления карточки
-profileAddButton.addEventListener('click', () => data.togglePopupClass(popupTypeAddNewCard));
+profileAddButton.addEventListener('click', () => functions.togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на крестик в попапе добавления карточки
-anotherCloseButton.addEventListener('click', () => data.togglePopupClass(popupTypeAddNewCard));
+anotherCloseButton.addEventListener('click', () => functions.togglePopupClass(popupTypeAddNewCard));
 // * вешаем обработчик на попап добавления карточки - по клику на фон попап закрывается
-popupTypeAddNewCard.addEventListener('click', data.closePopupOnClick);
+popupTypeAddNewCard.addEventListener('click', functions.closePopupOnClick);
 
 // * вешаем обработчик на форму попапа добавления карточки. по клику на кнопку "сохранить" добавляется новая карточка
 popupFormTypeAddCard.addEventListener('submit', (evt) => {
@@ -109,14 +113,17 @@ popupFormTypeAddCard.addEventListener('submit', (evt) => {
 
   const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
 
-  const card = {
+  const item = {
     name: popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value,
     link: popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value
 }
+  
+  const newCard = new Card(item, templateCard, photoPopup);
+  const visibleCard = newCard.getVisibleCard();
 
-  renderCard(card);
+  initialCardList.addItem(visibleCard);
 
-  data.togglePopupClass(popupTypeAddNewCard);
+  functions.togglePopupClass(popupTypeAddNewCard);
 
   popupFormTypeAddCard.reset();
   
@@ -125,15 +132,14 @@ popupFormTypeAddCard.addEventListener('submit', (evt) => {
 });
 
 // * вешаем обработчик на кнопку закрытия большого попапа
-photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => data.togglePopupClass(photoPopup));
+photoPopup.querySelector('.photo-popup__close-button').addEventListener('click', () => functions.togglePopupClass(photoPopup));
 
 // * вешаем обработчик на фон попапа с большим фото. по клику на фон попап закрывается
-photoPopup.addEventListener('click', data.closePopupOnClick);
+photoPopup.addEventListener('click', functions.closePopupOnClick);
 
 // * МАССИВ
-consts.initialCards.forEach(card => {
-  renderCard(card);
-});
+
+initialCardList.renderAll();
 
 const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
 const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
