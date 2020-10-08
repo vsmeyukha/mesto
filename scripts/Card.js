@@ -1,10 +1,10 @@
 import * as functions from './utils.js';
 
 export default class Card {
-  constructor(data, cardTemplate, photoPopup) {
+  constructor(data, cardTemplate, handleCardClick) {
     this._data = data;
     this._cardTemplate = cardTemplate;
-    this._photoPopup = photoPopup;
+    this.handleCardClick = handleCardClick;
     
   };
 
@@ -22,10 +22,8 @@ export default class Card {
 
   _setEventListeners = () => {
     this._visibleCard.querySelector('.card__img').addEventListener('click', () => {
-      this._photoPopup.querySelector('.photo-popup__image').src = this._data.link;
-      this._photoPopup.querySelector('.photo-popup__caption').textContent = this._data.name;
-  
-      functions.togglePopupClass(this._photoPopup);
+      this.handleCardClick();
+      // functions.togglePopupClass(this._photoPopup);
     });
 
     this._visibleCard.querySelector('.card__like-button').addEventListener('click', this._likeCard);

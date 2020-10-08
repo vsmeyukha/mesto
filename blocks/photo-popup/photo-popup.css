@@ -1,7 +1,6 @@
 @import url(./__caption/photo-popup__caption.css);
 @import url(./__image/photo-popup__image.css);
 @import url(./__container/photo-popup__container.css);
-@import url(./__close-button/photo-popup__close-button.css);
 
 .photo-popup {
   width: 100%;

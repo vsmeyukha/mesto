@@ -4,13 +4,13 @@
 @import url(./__title/popup__title.css);
 @import url(./__fieldset/popup__fieldset.css);
 @import url(./__submit/popup__submit.css);
-@import url(./__close-button/popup__close-button.css);
-@import url(./__close-img/popup__close-img.css);
 @import url(./__submit/_disabled/popup__submit_disabled.css);
 @import url(./__input/_type/_error/popup__input_type_error.css);
 @import url(./__input-error/popup__input-error.css);
 @import url(./__input-error/_active/popup__input-error_active.css);
-
+@import url(./__close-button/popup__close-button.css);
+@import url(./__close-button/_type/popup__close-button_type_photo-popup.css);
+@import url(./__close-button/_type/popup__close-button_type_popup-with-forms.css);
 
 .popup {
   width: 100%;

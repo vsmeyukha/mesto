@@ -20,7 +20,8 @@ const closePopupOnEscPress = () => {
 
   popupList.forEach(popup => {
     document.addEventListener('keydown', evt => {
-      if (popup.classList.contains('popup_opened') && evt.key === 'Escape') {
+      if (popup.classList.contains('popup_opened') && evt.key === 'Escape')
+      {
         togglePopupClass(popup);
       }
     });
