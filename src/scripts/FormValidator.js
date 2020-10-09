@@ -5,7 +5,7 @@ export default class FormValidator {
   }
 
   // * Функция, которая добавляет класс с ошибкой
-  _showInputError = (inputEl, errorMessage) => {
+  _showInputError(inputEl, errorMessage) {
     // ? получаем спан с текстом ошибки внутри функции
     const _errorSpan = this._popupForm.querySelector(`#${inputEl.id}-error`);
     // ? красим форму в красный
@@ -17,7 +17,7 @@ export default class FormValidator {
   };
 
   // * Функция, которая удаляет класс с ошибкой
-  _hideInputError = (inputEl) => {
+  _hideInputError(inputEl) {
     const _errorSpan = this._popupForm.querySelector(`#${inputEl.id}-error`);
     inputEl.classList.remove(this._allClasses.inputTypeError);
     _errorSpan.classList.remove(this._allClasses.errorText);
@@ -26,7 +26,7 @@ export default class FormValidator {
   };
 
   // * Функция, которая проверяет валидность поля
-  _isValid = (inputEl) => {
+  _isValid(inputEl) {
     // ? в if мы передаем уже не конкретный инпут с конкретным классом, а переменную
     if (!inputEl.validity.valid) {
       // ? Если поле не проходит валидацию, покажем ошибку
@@ -39,7 +39,7 @@ export default class FormValidator {
   };
 
   // * Функция, которая проверяет, чтобы все поля были валидны
-  _hasInvalidInput = () => {
+  _hasInvalidInput() {
     // ? проходим по этому массиву методом some
     return this._inputList.some((inputEl) => {
       // ? Если поле не валидно, колбэк вернёт true. Обход массива прекратится и вся функция hasInvalidInput вернёт true
@@ -49,7 +49,7 @@ export default class FormValidator {
   };
 
   // * Функция, которая принимает массив полей ввода и элемент кнопки, состояние которой нужно менять
-  _toggleButtonState = () => {
+  _toggleButtonState() {
     // ? Если есть хотя бы один невалидный инпут
     if (this._hasInvalidInput()) {
       // ? функция сделает кнопку неактивной
@@ -64,7 +64,7 @@ export default class FormValidator {
 };
 
   // * функция, которая добавляет обработчик всем полям
-  _setEventListeners = () => {
+  _setEventListeners() {
     // ? Находим все поля внутри формы, сделаем из них массив методом Array.from
     this._inputList = Array.from(this._popupForm.querySelectorAll(this._allClasses.input));
   
@@ -86,7 +86,7 @@ export default class FormValidator {
   };
 
   // * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим параметром переменную, его обозначающую
-  enableValidation = () => {    
+  enableValidation() {    
     this._popupForm.addEventListener('submit', (evt) => {
         // ? У каждой формы отменяем стандартное поведение
         evt.preventDefault();

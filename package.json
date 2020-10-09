@@ -1,0 +1,25 @@
+{
+  "name": "mesto",
+  "version": "1.0.0",
+  "description": "sort of site for loading and looking at pictures",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf dist && webpack",
+    "dev": "webpack-dev-server --open --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vsmeyukha/mesto.git"
+  },
+  "author": "Victor Smeyukha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vsmeyukha/mesto/issues"
+  },
+  "homepage": "https://github.com/vsmeyukha/mesto#readme",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

@@ -16,13 +16,13 @@ export default class Popup {
 
 // * интересно, зачем метод close должен быть публичным, если вместо него в index.js вызывается setEventListeners, в который передан в свою очередь close
   
-  closePopupOnPopupClick = (event) => {
+  closePopupOnPopupClick(event) {
   if (event.target !== event.currentTarget) {
     return;
   } this.close();
 }
 
-  _handleEscClose = () => {
+  _handleEscClose() {
     document.addEventListener('keydown', evt => {
       if (this._popup.classList.contains('popup_opened') && evt.key === 'Escape') {
         this.close();
