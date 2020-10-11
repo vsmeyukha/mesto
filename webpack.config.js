@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); // подключит�
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); 
 
 module.exports = {
+  mode: 'development',
   entry: { main: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -23,7 +24,7 @@ module.exports = {
       },
       {
         // регулярное выражение, которое ищет все файлы с такими расширениями
-        test: /\.(png|svg|jpg|gif|woff2)$/,
+        test: /\.(png|svg|jpg|gif|woff|woff2)$/,
         // при обработке этих файлов нужно использовать file-loader
         loader: 'file-loader'
       },
