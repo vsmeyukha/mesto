@@ -2,10 +2,8 @@
 
 import Card from './scripts/Card.js';
 import FormValidator from './scripts/FormValidator.js';
-import * as functions from './scripts/utils.js';
 import * as consts from './scripts/consts.js';
 import Section from './scripts/Section.js';
-import Popup from './scripts/Popup.js';
 import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
 import UserInfo from './scripts/UserInfo.js';
@@ -26,22 +24,16 @@ const allSelectorClasses = {
 // * блок Profile
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
-const profileName = profile.querySelector('.profile__name');
-const profileRegalia = profile.querySelector('.profile__regalia');
 const profileAddButton = profile.querySelector('.profile__add-button');
 
 // * popup Profile-Edit
-const popupTypeProfileEdit = document.querySelector('.popup_type_profile-edit'); 
-const popupCloseButton = document.querySelector('.popup__close-button'); 
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 const popupFormTypeUserInfo = document.querySelector('.popup__form_type_user-info');
-const popupSubmitButton = document.querySelector('.popup__submit');
 
 // * попап добавления новой карточки
-const popupTypeAddNewCard = document.querySelector('.popup_type_add-new-card');
-const anotherCloseButton = document.querySelector('.another-close-button'); 
 const popupFormTypeAddCard = document.querySelector('.popup__form_type_add-card');
+const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
 
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
@@ -56,13 +48,15 @@ photoPopup.setEventListeners();
 
 // ! создаем секшн и прочее для отрисовки карточек 
 
+const createCard = (item, templateCard, handleCardClick) => new Card(item, templateCard, handleCardClick);
+
 const initialCardList = new Section({
   items: consts.initialCards,
   renderer: (item) => {
     const handleCardClick = () => {
       photoPopup.open(item);
     };
-    const newCard = new Card(item, templateCard, handleCardClick);
+    const newCard = createCard(item, templateCard, handleCardClick);
     const visibleCard = newCard.getVisibleCard();
     initialCardList.addItem(visibleCard);
   }
@@ -75,14 +69,9 @@ const profileSelectors = {
   userRegaliaSelector: '.profile__regalia'
 }
 
-const inputsSelectors = {
-  name: '#user-name',
-  regalia: '#user-regalia'
-}
-
-const submitProfileEditForm = (evt) => {
+const submitProfileEditForm = (evt, values) => {
   evt.preventDefault();
-  profileInfo.setUserInfo(inputsSelectors);
+  profileInfo.setUserInfo(...values);
   editProfilePopup.close();
 }
 
@@ -102,26 +91,24 @@ editProfilePopup.setEventListeners();
 
 // ! создаем все для добавления карточки
 
-const submitAddCardForm = (evt) => {
+const submitAddCardForm = (evt, [name, link]) => {
   evt.preventDefault();
 
   const item = {
-    name: popupFormTypeAddCard.querySelector('.popup__input_type_card-title').value,
-    link: popupFormTypeAddCard.querySelector('.popup__input_type_card-link').value
+    name, link
   }
 
   const handleCardClick = () => {
     photoPopup.open(item);
   };
   
-  const newCard = new Card(item, templateCard, handleCardClick);
+  const newCard = createCard(item, templateCard, handleCardClick);;
   const visibleCard = newCard.getVisibleCard();
   
   initialCardList.addItem(visibleCard);
   
   addNewCardPopup.close();
 
-  const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
   submitButton.classList.add('popup__submit_disabled');
   submitButton.disabled = true;
 }

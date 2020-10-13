@@ -2,28 +2,20 @@ export default class UserInfo {
   constructor({ userNameSelector, userRegaliaSelector }) {
     this._userNameSelector = userNameSelector;
     this._userRegaliaSelector = userRegaliaSelector;
+
+    this._userNameElement = document.querySelector(this._userNameSelector);
+    this._userRegaliaElement = document.querySelector(this._userRegaliaSelector);
   }
 
   getUserInfo() {
     return {
-      name: document.querySelector(this._userNameSelector).textContent,
-      regalia: document.querySelector(this._userRegaliaSelector).textContent
+      name: this._userNameElement.textContent,
+      regalia: this._userRegaliaElement.textContent
     }
   }
 
-  // ! но это не по заданию!!!
-
-  setUserInfo({ name, regalia }) {
-    document.querySelector(this._userNameSelector).textContent = document.querySelector(name).value;
-    document.querySelector(this._userRegaliaSelector).textContent = document.querySelector(regalia).value;
+  setUserInfo(name, regalia) {
+    this._userNameElement.textContent = name;
+    this._userRegaliaElement.textContent = regalia;
   }
 }
-
-// ! Класс UserInfo отвечает за управление отображением информации о пользователе на странице. Этот класс:
-// ! Принимает в конструктор объект с селекторами двух элементов: элемента имени пользователя и элемента информации о себе.
-  // ? done
-// ! Содержит публичный метод getUserInfo, который возвращает объект с данными пользователя. Этот метод пригодится когда данные пользователя нужно будет подставить в форму при открытии.
-// ! Содержит публичный метод setUserInfo, который принимает новые данные пользователя и добавляет их на страницу.
-
-// ? почему-то в объект нельзя записать this.blablabla
-
