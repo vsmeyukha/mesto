@@ -48,7 +48,11 @@ photoPopup.setEventListeners();
 
 // ! создаем секшн и прочее для отрисовки карточек 
 
-const createCard = (item, templateCard, handleCardClick) => new Card(item, templateCard, handleCardClick);
+const getNewCard = (item, templateCard, handleCardClick) => {
+  const newCard = new Card(item, templateCard, handleCardClick);
+  return newCard.getVisibleCard();
+}
+
 
 const initialCardList = new Section({
   items: consts.initialCards,
@@ -56,9 +60,7 @@ const initialCardList = new Section({
     const handleCardClick = () => {
       photoPopup.open(item);
     };
-    const newCard = createCard(item, templateCard, handleCardClick);
-    const visibleCard = newCard.getVisibleCard();
-    initialCardList.addItem(visibleCard);
+    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick));
   }
 }, cardsSection);
 
@@ -102,11 +104,11 @@ const submitAddCardForm = (evt, [name, link]) => {
     photoPopup.open(item);
   };
   
-  const newCard = createCard(item, templateCard, handleCardClick);;
-  const visibleCard = newCard.getVisibleCard();
+  // const newCard = createCard(item, templateCard, handleCardClick);;
+  // const visibleCard = newCard.getVisibleCard();
   
-  initialCardList.addItem(visibleCard);
-  
+  initialCardList.addItem(getNewCard(item, templateCard, handleCardClick));
+
   addNewCardPopup.close();
 
   submitButton.classList.add('popup__submit_disabled');
