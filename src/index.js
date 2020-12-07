@@ -8,6 +8,7 @@ import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
 import UserInfo from './scripts/UserInfo.js';
 import './pages/index.css';
+import Api from './scripts/utils/Api';
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
@@ -41,6 +42,10 @@ const cardsSection = document.querySelector('.cards');
 // * темплейт карточки
 const templateCard = document.querySelector('#cards-template');
 
+// ! API
+
+const api = new Api('2dbd0122-ea43-4557-862d-f5c5a66a918e');
+
 // ! создаем фотопопап
 
 const photoPopup = new PopupWithImage('.photo-popup');
@@ -52,17 +57,6 @@ const getNewCard = (item, templateCard, handleCardClick) => {
   const newCard = new Card(item, templateCard, handleCardClick);
   return newCard.getVisibleCard();
 }
-
-
-const initialCardList = new Section({
-  items: consts.initialCards,
-  renderer: (item) => {
-    const handleCardClick = () => {
-      photoPopup.open(item);
-    };
-    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick));
-  }
-}, cardsSection);
 
 // ! создаем все для изменения профиля
 
@@ -90,6 +84,14 @@ profileEditButton.addEventListener('click', () => {
 
 editProfilePopup.setEventListeners();
 
+api.getUserInfo()
+  .then((res) => {
+  return res.json();
+  })
+  .then((data) => {
+    console.log(data);
+    profileInfo.setUserInfo(data.name, data.about);
+  })
 
 // ! создаем все для добавления карточки
 
@@ -123,7 +125,20 @@ addNewCardPopup.setEventListeners();
 
 // * МАССИВ
 
-initialCardList.renderAll();
+api.getInitialCards()
+  .then(res => res.json())
+  .then((items) => {
+    const initialCardList = new Section({
+      items,
+      renderer: (item) => {
+        const handleCardClick = () => {
+          photoPopup.open(item);
+        };
+        initialCardList.addItem(getNewCard(item, templateCard, handleCardClick));
+      }
+    }, cardsSection);
+    initialCardList.renderAll();
+  })
 
 const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
 const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
