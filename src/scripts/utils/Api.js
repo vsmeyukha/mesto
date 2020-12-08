@@ -19,4 +19,15 @@ export default class Api {
     })
   }
 
+  editProfile() {
+    return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me', {
+      method: 'PATCH',
+      headers: {
+        ...this.headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    })
+  }
+
 }
