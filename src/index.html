@@ -53,6 +53,22 @@
 
     </div>
 
+    <div class="popup popup_type_change-avatar popup_opened">
+      
+      <div class="popup__container">
+        <button class="popup__close-button popup__close-button_type_popup-with-forms" type="button"></button>
+          <h3 class="popup__title">Изменить аватар</h3>
+          <form class="popup__form popup__form_type_user-info" name="user-info" novalidate>
+            <fieldset class="popup__fieldset popup__fieldset_type_user-info">
+              <input type="url" class="popup__input popup__input_type_avatar-link" placeholder="Ссылка на аву" name="avatar-link" required id="avatar-link">
+              <span class="popup__input-error" id="user-regalia-error"></span>
+            </fieldset>
+            <button type="submit" class="popup__submit" value="Сохранить" name="submit" disabled>Сохранить</button>
+          </form>
+      </div>
+
+    </div>
+
     <div class="popup popup_type_add-new-card">
       
       <div class="popup__container">
@@ -71,7 +87,7 @@
 
     </div>
 
-    <div class="popup popup_type_submit popup_opened">
+    <div class="popup popup_type_submit">
 
       <div class="popup__container">
         <button class="popup__close-button popup__close-button_type_popup-with-forms" type="button"></button>
