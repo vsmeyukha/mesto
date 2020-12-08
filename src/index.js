@@ -77,7 +77,7 @@ const editProfilePopup = new PopupWithForm('.popup_type_profile-edit', submitPro
 
 profileEditButton.addEventListener('click', () => {
   const {name, regalia} = profileInfo.getUserInfo();
-  popupInputTypeName.value = name;
+  popupInputTypeName.value = name; 
   popupInputTypeRegalia.value = regalia;
   editProfilePopup.open();
 });
