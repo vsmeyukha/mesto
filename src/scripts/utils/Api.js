@@ -23,8 +23,8 @@ export default class Api {
     })
   }
 
-  deleteCard() {
-    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/${res._id}`, {
+  deleteCard(id) {
+    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/${id}`, {
       method: 'DELETE',
       headers: this.headers
     })

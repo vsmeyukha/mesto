@@ -9,6 +9,7 @@ import PopupWithForm from './scripts/PopupWithForm.js';
 import UserInfo from './scripts/UserInfo.js';
 import './pages/index.css';
 import Api from './scripts/utils/Api';
+import PopupWithSubmit from './scripts/PopupWithSubmit.js';
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
@@ -122,6 +123,24 @@ profileAddButton.addEventListener('click', () => {
   addNewCardPopup.open();
 });
 addNewCardPopup.setEventListeners();
+
+// ! ПОПАП ПОДТВЕРЖДЕНИЯ
+
+const deleteACard = (evt, id) => {
+  evt.preventDefault();
+  console.log('hello');
+  api.deleteCard(id)
+    .then(res => res.json())
+    .then((data) => {
+      id = data._id;
+    });
+}
+
+const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
+
+popupForDeleting.setEventListeners();
+
+export { popupForDeleting };
 
 // * МАССИВ
 

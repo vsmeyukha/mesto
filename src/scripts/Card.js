@@ -1,3 +1,5 @@
+import { popupForDeleting } from '../index';
+
 export default class Card {
   constructor(data, cardTemplate, handleCardClick) {
     this._data = data;
@@ -11,7 +13,8 @@ export default class Card {
   };
 
   _deleteCard(evt) {
-    evt.target.closest('.card').remove();
+    // evt.target.closest('.card').remove();
+    popupForDeleting.open();
   };
 
   _getTemplate() {
