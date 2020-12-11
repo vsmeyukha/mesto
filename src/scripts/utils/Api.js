@@ -12,7 +12,7 @@ export default class Api {
     })
   }
 
-  addNewCard() {
+  addNewCard(obj) {
     return fetch('https://mesto.nomoreparties.co/v1/cohort-18/cards', {
       method: 'POST',
       headers: {
@@ -37,7 +37,7 @@ export default class Api {
     })
   }
 
-  editProfile() {
+  editProfile(obj) {
     return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me', {
       method: 'PATCH',
       headers: {
@@ -55,8 +55,8 @@ export default class Api {
     })
   }
 
-  addALike() {
-    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/likes/${res._id}`, {
+  addALike(id) {
+    return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/likes/${id}`, {
       method: 'PUT',
       headers: this.headers
     })

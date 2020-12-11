@@ -5,6 +5,7 @@
 @import url(./__like-button/card__like-button.css);
 @import url(./__like-button/_active/card__like-button_active.css);
 @import url(./__delete-card/card__delete-card.css);
+@import url(./__like-scope/card__like-scope.css);
 
 .card {
   width: 100%;
