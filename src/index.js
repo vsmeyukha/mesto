@@ -9,7 +9,7 @@ import PopupWithForm from './scripts/PopupWithForm.js';
 import UserInfo from './scripts/UserInfo.js';
 import './pages/index.css';
 import Api from './scripts/utils/Api';
-import PopupWithSubmit from './scripts/PopupWithSubmit.js';
+import PopupWithSubmit from "./scripts/PopupWithSubmit";
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
@@ -52,22 +52,33 @@ const api = new Api('2dbd0122-ea43-4557-862d-f5c5a66a918e');
 const photoPopup = new PopupWithImage('.photo-popup');
 photoPopup.setEventListeners();
 
-// ! LIKE
-
-const likeACard = (id) => {
-  return api.addALike(id);
-}
-
-// ! создаем секшн и прочее для отрисовки карточек 
+// ! создаем секшн и прочее для отрисовки карточек
 
 const getNewCard = (item, templateCard, handleCardClick, likeACard) => {
-  const newCard = new Card(item, templateCard, handleCardClick, likeACard);
-  return newCard.getVisibleCard();
+  // ! создаем попап для удаления и передаем его далее в качестве аргумента в new Card()
+  const deleteACard = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    console.log('hello');
+    api.deleteCard(item._id)
+      .then(res => res.json())
+      .then((data) => {
+        const id = data._id;
+        console.log('removed card with id', id);
+      });
+  }
+  // ! ПОПАП ПОДТВЕРЖДЕНИЯ
+  const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
+  popupForDeleting.setEventListeners();
+    
+  const newCard = new Card(item, templateCard, handleCardClick, likeACard, popupForDeleting);
+  return newCard.getVisibleCard(item);
 }
 
 const initialCardList = new Section({
   items: [],
   renderer: (item) => {
+    const likeACard = () => api.addALike(item._id);
     const handleCardClick = () => {
       photoPopup.open(item);
     };
@@ -98,8 +109,8 @@ const profileInfo = new UserInfo(profileSelectors);
 const editProfilePopup = new PopupWithForm('.popup_type_profile-edit', submitProfileEditForm);
 
 profileEditButton.addEventListener('click', () => {
-  const {name, regalia} = profileInfo.getUserInfo();
-  popupInputTypeName.value = name; 
+  const { name, regalia } = profileInfo.getUserInfo();
+  popupInputTypeName.value = name;
   popupInputTypeRegalia.value = regalia;
   editProfilePopup.open();
 });
@@ -127,14 +138,12 @@ const submitAddCardForm = (evt, [name, link]) => {
         name: data.name,
         link: data.link
       }
-      const handleCardClick = () => {
-        photoPopup.open(imgInfo);
-      };
-      
-      initialCardList.addItem(getNewCard(imgInfo, templateCard, handleCardClick, likeACard));
-    
+      const likeACard = () => api.addALike(data._id);
+      const handleCardClick = () => { photoPopup.open(imgInfo) };
+      initialCardList.addItem(getNewCard(data, templateCard, handleCardClick, likeACard));
+
       addNewCardPopup.close();
-    
+
       submitButton.classList.add('popup__submit_disabled');
       submitButton.disabled = true;
     });
@@ -146,33 +155,16 @@ profileAddButton.addEventListener('click', () => {
 });
 addNewCardPopup.setEventListeners();
 
-// ! ПОПАП ПОДТВЕРЖДЕНИЯ
+// Удалила циклическую зависимость
+// export { popupForDeleting };
 
-const deleteACard = (evt, id) => {
-  evt.preventDefault();
-  console.log('hello');
-  api.deleteCard(id)
-    .then(res => res.json())
-    .then((data) => {
-      id = data._id;
-    });
-}
-
-const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
-
-popupForDeleting.setEventListeners();
-
-export { popupForDeleting };
-
-// * МАССИВ
-
+// * МАССИВ С СЕРВЕРА
 api.getInitialCards()
   .then(res => res.json())
   .then((items) => {
     items.forEach(item => {
-      const handleCardClick = () => {
-        photoPopup.open(item);
-      };
+        const likeACard = () => api.addALike(item._id);
+        const handleCardClick = () => { photoPopup.open(item); };
       initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard));
     })
     initialCardList.renderAll();

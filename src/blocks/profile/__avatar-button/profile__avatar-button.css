@@ -1,0 +1,19 @@
+.profile__avatar-button {
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+
+  background: rgba(0, 0, 0, .5);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  visibility: hidden;
+  opacity: 0;
+  transition: .2s ease-in;
+}

@@ -2,12 +2,13 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover;
 
   grid-area: avatar;
 
   margin-right: 30px;
   align-self: center;
+
+  position: relative;
 }
 
 @media screen and (max-width: 500px) {
