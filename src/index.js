@@ -52,42 +52,48 @@ const api = new Api('2dbd0122-ea43-4557-862d-f5c5a66a918e');
 const photoPopup = new PopupWithImage('.photo-popup');
 photoPopup.setEventListeners();
 
+// ! функция удаления карточки, которая будет приходить в экземпляр PopupWithSubmit, созданный для удаления карточки. она принимает id, который задается методом setCurrentCardId в PopupWithSubmit
+const deleteACard = (id) => {
+  console.log('hello');
+  api.deleteCard(id)
+    .then(res => res.json())
+    .then((data) => {
+      const id = data._id;
+      console.log(`Карточка удалена, ID = ${id}`);
+      })
+    .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
+}
+
+// TODO навесить catch на все api-методы
+
+// ! создаем попап подтверждения удаления
+
+const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
+popupForDeleting.setEventListeners();
+
 // ! создаем секшн и прочее для отрисовки карточек
 
-const getNewCard = (item, templateCard, handleCardClick, likeACard) => {
-  // ! создаем попап для удаления и передаем его далее в качестве аргумента в new Card()
-  const deleteACard = (evt) => {
-    evt.stopPropagation();
-    evt.preventDefault();
-    console.log('hello');
-    api.deleteCard(item._id)
-      .then(res => res.json())
-      .then((data) => {
-        const id = data._id;
-        console.log('removed card with id', id);
-      });
-  }
-  // ! ПОПАП ПОДТВЕРЖДЕНИЯ
-  const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
-  popupForDeleting.setEventListeners();
-    
-  const newCard = new Card(item, templateCard, handleCardClick, likeACard, popupForDeleting);
-  return newCard.getVisibleCard(item);
+const getNewCard = (item, templateCard, handleCardClick, likeACard, takeLikeBack) => {
+    const newCard = new Card(item, templateCard, handleCardClick, likeACard, takeLikeBack, popupForDeleting);
+    return newCard.getVisibleCard(item);
 }
+
+// ? выносим пару раз использующиеся коллбэки в глобальную зону
+const likeACard = (id) => () => api.addALike(id);
+const takeLikeBack = (id) => () => api.takeLikeBack(id);
+const handleCardClick = (item) => () => { photoPopup.open(item) };
 
 const initialCardList = new Section({
   items: [],
   renderer: (item) => {
-    const likeACard = () => api.addALike(item._id);
-    const handleCardClick = () => {
-      photoPopup.open(item);
-    };
-    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard));
+    likeACard(id);
+    takeLikeBack(id);
+    handleCardClick(item);
+    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack));
   }
 }, cardsSection);
 
 // ! создаем все для изменения профиля
-
 const profileSelectors = {
   userNameSelector: '.profile__name',
   userRegaliaSelector: '.profile__regalia'
@@ -102,6 +108,7 @@ const submitProfileEditForm = (evt, values) => {
       profileInfo.setUserInfo(data.name, data.about);
       editProfilePopup.close();
     })
+    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
 }
 
 const profileInfo = new UserInfo(profileSelectors);
@@ -119,12 +126,12 @@ editProfilePopup.setEventListeners();
 
 api.getUserInfo()
   .then((res) => {
-  return res.json();
+    return res.json();
   })
   .then((data) => {
-    console.log(data);
     profileInfo.setUserInfo(data.name, data.about);
   })
+  .catch(err => console.error(`Ошибка при получении и нформации о пользователе: ${err}`));
 
 // ! создаем все для добавления карточки
 
@@ -133,20 +140,18 @@ const submitAddCardForm = (evt, [name, link]) => {
 
   api.addNewCard({ name, link })
     .then(res => res.json())
-    .then(data => {
-      const imgInfo = {
-        name: data.name,
-        link: data.link
-      }
-      const likeACard = () => api.addALike(data._id);
-      const handleCardClick = () => { photoPopup.open(imgInfo) };
-      initialCardList.addItem(getNewCard(data, templateCard, handleCardClick, likeACard));
+    .then(item => {
+      likeACard(item._id);
+      takeLikeBack(item._id);
+      handleCardClick(item);
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack));
 
       addNewCardPopup.close();
 
       submitButton.classList.add('popup__submit_disabled');
       submitButton.disabled = true;
-    });
+    })
+    .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`));
 }
 
 const addNewCardPopup = new PopupWithForm('.popup_type_add-new-card', submitAddCardForm);
@@ -155,20 +160,18 @@ profileAddButton.addEventListener('click', () => {
 });
 addNewCardPopup.setEventListeners();
 
-// Удалила циклическую зависимость
-// export { popupForDeleting };
+
 
 // * МАССИВ С СЕРВЕРА
 api.getInitialCards()
   .then(res => res.json())
   .then((items) => {
     items.forEach(item => {
-        const likeACard = () => api.addALike(item._id);
-        const handleCardClick = () => { photoPopup.open(item); };
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard));
-    })
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(item._id), takeLikeBack(item._id)));
+    });
     initialCardList.renderAll();
   })
+  .catch(err => console.error(`Ошибка при получении изначального массива карточек: ${err}`));
 
 const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
 const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
