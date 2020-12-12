@@ -27,6 +27,7 @@ const allSelectorClasses = {
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
 const profileAddButton = profile.querySelector('.profile__add-button');
+const profileChangeAvatarButton = profile.querySelector('.profile__avatar-button');
 
 // * popup Profile-Edit
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
@@ -62,9 +63,8 @@ const deleteACard = (id) => {
       console.log(`Карточка удалена, ID = ${id}`);
       })
     .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
+  popupForDeleting.close();
 }
-
-// TODO навесить catch на все api-методы
 
 // ! создаем попап подтверждения удаления
 
@@ -94,9 +94,11 @@ const initialCardList = new Section({
 }, cardsSection);
 
 // ! создаем все для изменения профиля
+// ? изменение имени и регалий
 const profileSelectors = {
   userNameSelector: '.profile__name',
-  userRegaliaSelector: '.profile__regalia'
+  userRegaliaSelector: '.profile__regalia',
+  userAvatarSelector: '.profile__avatar-image'
 }
 
 const submitProfileEditForm = (evt, values) => {
@@ -124,6 +126,7 @@ profileEditButton.addEventListener('click', () => {
 
 editProfilePopup.setEventListeners();
 
+// ? получение информации о пользователе
 api.getUserInfo()
   .then((res) => {
     return res.json();
@@ -132,6 +135,28 @@ api.getUserInfo()
     profileInfo.setUserInfo(data.name, data.about);
   })
   .catch(err => console.error(`Ошибка при получении и нформации о пользователе: ${err}`));
+
+// ? смена аватара
+const submitChangeAvatarForm = (evt, avatar) => {
+  evt.preventDefault();
+  console.log('privet');
+  api.changeAvatar({ avatar })
+    .then(res => res.json())
+    .then(data => {
+      profileInfo.setAvatar(data.avatar);
+      changeAvatarPopup.close();
+    })
+    .catch(err => console.error(`Ошибка при смене аватара: ${err}`));
+}
+
+const changeAvatarPopup = new PopupWithForm('.popup_type_change-avatar', submitChangeAvatarForm);
+changeAvatarPopup.setEventListeners();
+
+profileChangeAvatarButton.addEventListener('click', () => {
+  changeAvatarPopup.open();
+})
+
+
 
 // ! создаем все для добавления карточки
 

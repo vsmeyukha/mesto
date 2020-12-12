@@ -37,9 +37,9 @@ export default class Card {
 // ? обработчик лайка
   _handleLikeClick(evt) {
     if (evt.target.classList.contains('card__like-button_active')) {
-      this._dislikeCard(evt)
+      this._dislikeCard(evt);
     } else {
-      this._likeCard(evt)
+      this._likeCard(evt);
     }
 
   }

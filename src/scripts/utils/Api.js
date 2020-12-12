@@ -48,10 +48,14 @@ export default class Api {
     })
   }
 
-  changeAvatar() {
+  changeAvatar(obj) {
     return fetch('https://mesto.nomoreparties.co/v1/cohort-18/users/me/avatar', {
       method: 'PATCH',
-      headers: this.headers
+      headers: {
+        ...this.headers,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(obj)
     })
   }
 
