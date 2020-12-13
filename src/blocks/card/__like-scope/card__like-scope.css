@@ -1,3 +1,9 @@
 .card__like-scope {
-  color: black
+  color: black;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.23;
+  text-align: center;
+
+  margin: 0;
 }
