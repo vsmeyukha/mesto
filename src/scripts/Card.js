@@ -8,8 +8,8 @@ export default class Card {
     this._deleteCard = this._deleteCard.bind(this)
     this._visibleCard = this._getTemplate();
     this._likesCounter = this._visibleCard.querySelector('.card__like-scope');
-    this.popupForDeleting = popupForDeleting
-    this.id = data._id
+    this.popupForDeleting = popupForDeleting;
+    this.id = data._id;
   };
 
   // ? лайкнуть карточку

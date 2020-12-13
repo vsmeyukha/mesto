@@ -30,6 +30,7 @@ const profileAddButton = profile.querySelector('.profile__add-button');
 const profileChangeAvatarButton = profile.querySelector('.profile__avatar-button');
 
 // * popup Profile-Edit
+const popupProfileEdit = document.querySelector('.popup_type_profile-edit');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 const popupFormTypeUserInfo = document.querySelector('.popup__form_type_user-info');
@@ -107,7 +108,7 @@ const profileSelectors = {
 const submitProfileEditForm = (evt, values) => {
   evt.preventDefault();
   const [name, about] = values;
-  api.editProfile({name, about})
+  api.editProfile({ name, about })
     .then(res => res.json())
     .then(data => {
       profileInfo.setUserInfo(data.name, data.about);
@@ -182,6 +183,7 @@ const submitAddCardForm = (evt, [name, link]) => {
 }
 
 const addNewCardPopup = new PopupWithForm('.popup_type_add-new-card', submitAddCardForm);
+
 profileAddButton.addEventListener('click', () => {
   addNewCardPopup.open();
 });
