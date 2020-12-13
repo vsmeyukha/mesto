@@ -38,6 +38,9 @@ const popupFormTypeUserInfo = document.querySelector('.popup__form_type_user-inf
 const popupFormTypeAddCard = document.querySelector('.popup__form_type_add-card');
 const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
 
+// * попап смены авы
+const popupFormTypeChangeAvatar = document.querySelector('.popup__form_type_user-avatar');
+
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
 
@@ -134,28 +137,27 @@ api.getUserInfo()
   .then((data) => {
     profileInfo.setUserInfo(data.name, data.about);
   })
-  .catch(err => console.error(`Ошибка при получении и нформации о пользователе: ${err}`));
+  .catch(err => console.error(`Ошибка при получении информации о пользователе: ${err}`));
 
 // ? смена аватара
-const submitChangeAvatarForm = (evt, avatar) => {
+const changeAvatar = (evt, values) => {
   evt.preventDefault();
-  console.log('privet');
+  console.log(values);
+  const [avatar] = values;
   api.changeAvatar({ avatar })
     .then(res => res.json())
     .then(data => {
       profileInfo.setAvatar(data.avatar);
-      changeAvatarPopup.close();
     })
-    .catch(err => console.error(`Ошибка при смене аватара: ${err}`));
+    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
+  popupForChangingAva.close();
 }
 
-const changeAvatarPopup = new PopupWithForm('.popup_type_change-avatar', submitChangeAvatarForm);
-changeAvatarPopup.setEventListeners();
-
+const popupForChangingAva = new PopupWithForm('.popup_type_change-avatar', changeAvatar);
 profileChangeAvatarButton.addEventListener('click', () => {
-  changeAvatarPopup.open();
-})
-
+  popupForChangingAva.open();
+});
+popupForChangingAva.setEventListeners();
 
 
 // ! создаем все для добавления карточки
@@ -200,6 +202,8 @@ api.getInitialCards()
 
 const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
 const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
+const validChangeAvatar = new FormValidator(allSelectorClasses, popupFormTypeChangeAvatar);
 
 validUserInfo.enableValidation();
 validAddCard.enableValidation();
+validChangeAvatar.enableValidation();
