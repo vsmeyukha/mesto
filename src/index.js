@@ -50,7 +50,8 @@ const templateCard = document.querySelector('#cards-template');
 
 // ! API
 
-const api = new Api('2dbd0122-ea43-4557-862d-f5c5a66a918e');
+const apiKey = '2dbd0122-ea43-4557-862d-f5c5a66a918e';
+const api = new Api(apiKey);
 
 // ! создаем фотопопап
 
@@ -59,14 +60,25 @@ photoPopup.setEventListeners();
 
 // ! функция удаления карточки, которая будет приходить в экземпляр PopupWithSubmit, созданный для удаления карточки. она принимает id, который задается методом setCurrentCardId в PopupWithSubmit
 const deleteACard = (id) => {
-  console.log('hello');
-  api.deleteCard(id)
-    .then(res => res.json())
-    .then((data) => {
-      const id = data._id;
-      console.log(`Карточка удалена, ID = ${id}`);
-      })
-    .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
+  try {
+      api.deleteCard(id)
+          .then(res => {
+
+              if (res.status === 403) {
+                  throw new Error('Нет прав на удаление')
+              }
+              return res.json()
+          })
+          .then((data) => {
+              const id = data._id;
+
+              console.log(`Карточка удалена, ID = ${id}`);
+          })
+          .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
+  } catch (err) {
+    console.log('Нет прав на удаление');
+  }
+
   popupForDeleting.close();
 }
 
@@ -172,6 +184,15 @@ const submitAddCardForm = (evt, [name, link]) => {
       likeACard(item._id);
       takeLikeBack(item._id);
       handleCardClick(item);
+      const showBin = () => {
+        if (item.owner._id !== apiKey) {
+          getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack).showTheBin();
+        } else {
+          return;
+        }
+      }
+      showBin();
+
       initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack));
 
       addNewCardPopup.close();

@@ -16,5 +16,10 @@ export default class Section {
     this._containerSelector.prepend(item);
   } // принимает ДОМ-элемент и добавляет его в контейнер
 
+    // TODO надо предварительно в card.js задать элементу карточки id
+    removeItem(id) {
+      document.getElementById(id).remove();
+    } // принимает ДОМ-элемент и удаляет его
+
   // ! У класса Section нет своей разметки. Он получает разметку через функцию-колбэк и вставляет её в контейнер.
 }

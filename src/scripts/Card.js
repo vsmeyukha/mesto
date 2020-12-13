@@ -4,8 +4,8 @@ export default class Card {
     this.handleCardClick = handleCardClick;
     this.putLike = putLike;
     this.deleteLike = deleteLike;
-    this._handleLikeClick = this._handleLikeClick.bind(this)
-    this._deleteCard = this._deleteCard.bind(this)
+    this._handleLikeClick = this._handleLikeClick.bind(this);
+    this._deleteCard = this._deleteCard.bind(this);
     this._visibleCard = this._getTemplate();
     this._likesCounter = this._visibleCard.querySelector('.card__like-scope');
     this.popupForDeleting = popupForDeleting;
@@ -44,6 +44,10 @@ export default class Card {
 
   }
 
+  showTheBin() {
+      this._visibleCard.querySelector('.card__delete-card').classList.add('card__delete-card_invisible');
+  }
+
 // ? метод удаления карточки
   _deleteCard() {
     // evt.target.closest('.card').remove();
@@ -52,6 +56,7 @@ export default class Card {
   };
 
   _getTemplate() {
+    // TODO надо задать карточке id чтобы можно было ее удалить из разметки по ее id
     return this._cardTemplate.content.cloneNode(true);
   };
 
