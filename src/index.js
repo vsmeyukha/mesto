@@ -28,6 +28,7 @@ const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
 const profileAddButton = profile.querySelector('.profile__add-button');
 const profileChangeAvatarButton = profile.querySelector('.profile__avatar-button');
+const profileAvatar = document.querySelector('.profile__avatar-image');
 
 // * popup Profile-Edit
 const popupProfileEdit = document.querySelector('.popup_type_profile-edit');
@@ -52,6 +53,7 @@ const templateCard = document.querySelector('#cards-template');
 
 const apiKey = '2dbd0122-ea43-4557-862d-f5c5a66a918e';
 const api = new Api(apiKey);
+let myID = '';
 
 // ! создаем фотопопап
 
@@ -61,25 +63,24 @@ photoPopup.setEventListeners();
 // ! функция удаления карточки, которая будет приходить в экземпляр PopupWithSubmit, созданный для удаления карточки. она принимает id, который задается методом setCurrentCardId в PopupWithSubmit
 const deleteACard = (id) => {
   try {
-      api.deleteCard(id)
-          .then(res => {
-
-              if (res.status === 403) {
-                  throw new Error('Нет прав на удаление')
-              }
-              return res.json()
-          })
-          .then((data) => {
-              const id = data._id;
-
-              console.log(`Карточка удалена, ID = ${id}`);
-          })
-          .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
+    return api.deleteCard(id)
+      .then(res => {
+        if (res.status === 403) {
+          throw new Error('Нет прав на удаление')
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const id = data._id;
+        // initialCardList.removeItem(id);
+        console.log(`Карточка удалена, ID = ${id}`);
+        popupForDeleting.close();
+        window.location.reload();
+      })
+      .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
   } catch (err) {
     console.log('Нет прав на удаление');
   }
-
-  popupForDeleting.close();
 }
 
 // ! создаем попап подтверждения удаления
@@ -89,8 +90,8 @@ popupForDeleting.setEventListeners();
 
 // ! создаем секшн и прочее для отрисовки карточек
 
-const getNewCard = (item, templateCard, handleCardClick, likeACard, takeLikeBack) => {
-    const newCard = new Card(item, templateCard, handleCardClick, likeACard, takeLikeBack, popupForDeleting);
+const getNewCard = (item, templateCard, handleCardClick, likeACard, takeLikeBack, isBinVisible) => {
+    const newCard = new Card(item, templateCard, handleCardClick, likeACard, takeLikeBack, popupForDeleting, isBinVisible);
     return newCard.getVisibleCard(item);
 }
 
@@ -102,10 +103,9 @@ const handleCardClick = (item) => () => { photoPopup.open(item) };
 const initialCardList = new Section({
   items: [],
   renderer: (item) => {
-    likeACard(id);
-    takeLikeBack(id);
-    handleCardClick(item);
-    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack));
+    const id = item._id;
+    const isBinVisible = item.owner._id === myID;
+    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
   }
 }, cardsSection);
 
@@ -148,7 +148,10 @@ api.getUserInfo()
     return res.json();
   })
   .then((data) => {
-    profileInfo.setUserInfo(data.name, data.about);
+    const { avatar, name, about, _id } = data;
+    profileInfo.setUserInfo(name, about);
+    profileAvatar.setAttribute('src', avatar);
+    myID = _id;
   })
   .catch(err => console.error(`Ошибка при получении информации о пользователе: ${err}`));
 
@@ -181,19 +184,9 @@ const submitAddCardForm = (evt, [name, link]) => {
   api.addNewCard({ name, link })
     .then(res => res.json())
     .then(item => {
-      likeACard(item._id);
-      takeLikeBack(item._id);
-      handleCardClick(item);
-      const showBin = () => {
-        if (item.owner._id !== apiKey) {
-          getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack).showTheBin();
-        } else {
-          return;
-        }
-      }
-      showBin();
-
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick, likeACard, takeLikeBack));
+      const id = item._id;
+      const isBinVisible = item.owner._id === myID;
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
 
       addNewCardPopup.close();
 
@@ -217,7 +210,9 @@ api.getInitialCards()
   .then(res => res.json())
   .then((items) => {
     items.forEach(item => {
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(item._id), takeLikeBack(item._id)));
+      const isBinVisible = item.owner._id === myID;
+      const id = item._id;
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
     });
     initialCardList.renderAll();
   })

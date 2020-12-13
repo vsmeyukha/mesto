@@ -22,7 +22,7 @@ export default class PopupWithSubmit extends Popup {
   }
 
 // ? задаем попапу id текущей карточки
-  setCurrentCardId (id) {
+  setCurrentCardId(id) {
     this.currentCardId = id;
   }
 }

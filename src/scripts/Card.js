@@ -1,5 +1,5 @@
 export default class Card {
-  constructor(data, cardTemplate, handleCardClick, putLike, deleteLike, popupForDeleting) {
+  constructor(data, cardTemplate, handleCardClick, putLike, deleteLike, popupForDeleting, isBinVisible) {
     this._cardTemplate = cardTemplate;
     this.handleCardClick = handleCardClick;
     this.putLike = putLike;
@@ -10,6 +10,7 @@ export default class Card {
     this._likesCounter = this._visibleCard.querySelector('.card__like-scope');
     this.popupForDeleting = popupForDeleting;
     this.id = data._id;
+    this.setBinVisibility(isBinVisible);
   };
 
   // ? лайкнуть карточку
@@ -44,8 +45,10 @@ export default class Card {
 
   }
 
-  showTheBin() {
+  setBinVisibility(isBinVisible) {
+    if (!isBinVisible) {
       this._visibleCard.querySelector('.card__delete-card').classList.add('card__delete-card_invisible');
+    }
   }
 
 // ? метод удаления карточки
@@ -56,9 +59,14 @@ export default class Card {
   };
 
   _getTemplate() {
-    // TODO надо задать карточке id чтобы можно было ее удалить из разметки по ее id
     return this._cardTemplate.content.cloneNode(true);
   };
+
+  // TODO надо задать карточке id чтобы можно было ее удалить из разметки по ее id
+  // ! создать метод для присвоения ID
+  setCardID() {
+    this._visibleCard.setAttribute('id', this.id);
+  }
 
   // ? отображаем число лайков
   _setLikeCount(count) {
