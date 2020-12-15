@@ -66,7 +66,7 @@ export default class Api {
     })
   }
 
-  takeLikeBack(id) {
+  deleteLike(id) {
     return fetch(`https://mesto.nomoreparties.co/v1/cohort-18/cards/likes/${id}`, {
       method: 'DELETE',
       headers: this.headers

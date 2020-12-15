@@ -90,14 +90,14 @@ popupForDeleting.setEventListeners();
 
 // ! создаем секшн и прочее для отрисовки карточек
 
-const getNewCard = (item, templateCard, handleCardClick, likeACard, takeLikeBack, isBinVisible) => {
-    const newCard = new Card(item, templateCard, handleCardClick, likeACard, takeLikeBack, popupForDeleting, isBinVisible);
+const getNewCard = (item, templateCard, handleCardClick, likeACard, deleteLike, isBinVisible) => {
+    const newCard = new Card(item, templateCard, handleCardClick, likeACard, deleteLike, popupForDeleting, isBinVisible);
     return newCard.getVisibleCard(item);
 }
 
 // ? выносим пару раз использующиеся коллбэки в глобальную зону
 const likeACard = (id) => () => api.addALike(id);
-const takeLikeBack = (id) => () => api.takeLikeBack(id);
+const deleteLike = (id) => () => api.deleteLike(id);
 const handleCardClick = (item) => () => { photoPopup.open(item) };
 
 const initialCardList = new Section({
@@ -105,7 +105,7 @@ const initialCardList = new Section({
   renderer: (item) => {
     const id = item._id;
     const isBinVisible = item.owner._id === myID;
-    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
+    initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), deleteLike(id), isBinVisible));
   }
 }, cardsSection);
 
@@ -186,7 +186,7 @@ const submitAddCardForm = (evt, [name, link]) => {
     .then(item => {
       const id = item._id;
       const isBinVisible = item.owner._id === myID;
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), deleteLike(id), isBinVisible));
 
       addNewCardPopup.close();
 
@@ -212,7 +212,7 @@ api.getInitialCards()
     items.forEach(item => {
       const isBinVisible = item.owner._id === myID;
       const id = item._id;
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), takeLikeBack(id), isBinVisible));
+      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), deleteLike(id), isBinVisible));
     });
     initialCardList.renderAll();
   })
