@@ -1,15 +1,15 @@
 // ! ИМПОРТИРУЕМ ДАННЫЕ ИЗ МОДУЛЕЙ
 
-import Card from './scripts/Card.js';
-import FormValidator from './scripts/FormValidator.js';
-import * as consts from './scripts/consts.js';
-import Section from './scripts/Section.js';
-import PopupWithImage from './scripts/PopupWithImage.js';
-import PopupWithForm from './scripts/PopupWithForm.js';
-import UserInfo from './scripts/UserInfo.js';
-import './pages/index.css';
-import Api from './scripts/utils/Api';
-import PopupWithSubmit from "./scripts/PopupWithSubmit";
+import Card from '../scripts/components/Card.js';
+import FormValidator from '../scripts/components/FormValidator.js';
+import * as consts from '../scripts/utils/consts.js';
+import Section from '../scripts/components/Section.js';
+import PopupWithImage from '../scripts/components/PopupWithImage.js';
+import PopupWithForm from '../scripts/components/PopupWithForm.js';
+import UserInfo from '../scripts/components/UserInfo.js';
+import './index.css';
+import Api from '../scripts/components/Api';
+import PopupWithSubmit from "../scripts/components/PopupWithSubmit";
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
