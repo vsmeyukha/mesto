@@ -89,6 +89,7 @@ export default class Card {
 
     this._visibleCard.querySelector('.card__title').textContent = data.name;
     this._visibleCard.querySelector('.card__img').src = data.link;
+    this._visibleCard.querySelector('.card__img').alt = data.name;
     this._visibleCard.querySelector('.card__like-scope').textContent = data.likes.length;
     return this._visibleCard;
   };
