@@ -1,6 +1,6 @@
 export default class FormValidator {
-  constructor(allClasses, popupForm) {
-    this._allClasses = allClasses;
+  constructor(validationConfig, popupForm) {
+    this._validationConfig = validationConfig;
     this._popupForm = popupForm;
   }
 
@@ -9,18 +9,18 @@ export default class FormValidator {
     // ? получаем спан с текстом ошибки внутри функции
     const _errorSpan = this._popupForm.querySelector(`#${inputEl.id}-error`);
     // ? красим форму в красный
-    inputEl.classList.add(this._allClasses.inputTypeError);
+    inputEl.classList.add(this._validationConfig.inputTypeError);
     // ? текст спана = параметр errorMessage, в который мы в функции isValid положим свойство validationMessage
     _errorSpan.textContent = errorMessage;
     // ? выводим спан с текстом ошибки
-    _errorSpan.classList.add(this._allClasses.errorText);
+    _errorSpan.classList.add(this._validationConfig.errorText);
   };
 
   // * Функция, которая удаляет класс с ошибкой
   _hideInputError(inputEl) {
     const _errorSpan = this._popupForm.querySelector(`#${inputEl.id}-error`);
-    inputEl.classList.remove(this._allClasses.inputTypeError);
-    _errorSpan.classList.remove(this._allClasses.errorText);
+    inputEl.classList.remove(this._validationConfig.inputTypeError);
+    _errorSpan.classList.remove(this._validationConfig.errorText);
     // ? чистим текст ошибки
     _errorSpan.textContent = '';
   };
@@ -53,12 +53,12 @@ export default class FormValidator {
     // ? Если есть хотя бы один невалидный инпут
     if (this._hasInvalidInput()) {
       // ? функция сделает кнопку неактивной
-      this._buttonEl.classList.add(this._allClasses.submitButtonDisabled);
+      this._buttonEl.classList.add(this._validationConfig.submitButtonDisabled);
       this._buttonEl.disabled = true;
 
     } else {
       // ? в противном случае сделает кнопку активной
-      this._buttonEl.classList.remove(this._allClasses.submitButtonDisabled);
+      this._buttonEl.classList.remove(this._validationConfig.submitButtonDisabled);
       this._buttonEl.disabled = false;
     }
 };
@@ -66,9 +66,9 @@ export default class FormValidator {
   // * функция, которая добавляет обработчик всем полям
   _setEventListeners() {
     // ? Находим все поля внутри формы, сделаем из них массив методом Array.from
-    this._inputList = Array.from(this._popupForm.querySelectorAll(this._allClasses.input));
+    this._inputList = Array.from(this._popupForm.querySelectorAll(this._validationConfig.input));
   
-    this._buttonEl = this._popupForm.querySelector(this._allClasses.submitButton);
+    this._buttonEl = this._popupForm.querySelector(this._validationConfig.submitButton);
   
     // ? Вызовем toggleButtonState, чтобы не ждать ввода данных в поля
     this._toggleButtonState();

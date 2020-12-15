@@ -13,16 +13,6 @@ import PopupWithSubmit from "../scripts/components/PopupWithSubmit";
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
-// * вынесем отдельным объектом все используемые классы
-const allSelectorClasses = {
-  form: '.popup__form',
-  input: '.popup__input',
-  submitButton: '.popup__submit',
-  submitButtonDisabled: 'popup__submit_disabled',
-  inputTypeError: 'popup__input_type_error',
-  errorText: 'popup__input-error_active'
-}
-
 // * блок Profile
 const profile = document.querySelector('.profile');
 const profileEditButton = profile.querySelector('.profile__edit-button');
@@ -218,9 +208,9 @@ api.getInitialCards()
   })
   .catch(err => console.error(`Ошибка при получении изначального массива карточек: ${err}`));
 
-const validUserInfo = new FormValidator(allSelectorClasses, popupFormTypeUserInfo);
-const validAddCard = new FormValidator(allSelectorClasses, popupFormTypeAddCard);
-const validChangeAvatar = new FormValidator(allSelectorClasses, popupFormTypeChangeAvatar);
+const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
+const validAddCard = new FormValidator(consts.validationConfig, popupFormTypeAddCard);
+const validChangeAvatar = new FormValidator(consts.validationConfig, popupFormTypeChangeAvatar);
 
 validUserInfo.enableValidation();
 validAddCard.enableValidation();

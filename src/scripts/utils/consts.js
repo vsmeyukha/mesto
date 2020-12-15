@@ -27,4 +27,14 @@ const initialCards = [
   }
 ];
 
-export { initialCards };
+// * вынесем отдельным объектом все используемые классы
+const validationConfig = {
+    form: '.popup__form',
+    input: '.popup__input',
+    submitButton: '.popup__submit',
+    submitButtonDisabled: 'popup__submit_disabled',
+    inputTypeError: 'popup__input_type_error',
+    errorText: 'popup__input-error_active'
+  }
+
+export { initialCards, validationConfig };
