@@ -1,3 +1,6 @@
+import { renderLoading } from '../utils/utils';
+import { popupForDeletingSelector } from '../../pages/index';
+
 export default class Card {
   constructor(data, cardTemplate, handleCardClick, putLike, deleteLike, popupForDeleting, isBinVisible) {
     this._cardTemplate = cardTemplate;
@@ -54,8 +57,14 @@ export default class Card {
 // ? метод удаления карточки
   _deleteCard() {
     // evt.target.closest('.card').remove();
-    this.popupForDeleting.open();
-    this.popupForDeleting.setCurrentCardId(this.id);
+    if (this.popupForDeleting.querySelector('.popup__submit').textContent === 'Сохранить') {
+      this.popupForDeleting.open();
+      this.popupForDeleting.setCurrentCardId(this.id);
+    } else {
+      renderLoading(popupForDeletingSelector);
+      this.popupForDeleting.open();
+      this.popupForDeleting.setCurrentCardId(this.id);
+    }
   };
 
   _getTemplate() {

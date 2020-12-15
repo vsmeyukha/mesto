@@ -10,6 +10,7 @@ import UserInfo from '../scripts/components/UserInfo.js';
 import './index.css';
 import Api from '../scripts/components/Api';
 import PopupWithSubmit from "../scripts/components/PopupWithSubmit";
+import { renderLoading } from '../scripts/utils/utils';
 
 // ! ОБЪЯВЛЯЕМ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
 
@@ -25,19 +26,28 @@ const popupProfileEdit = document.querySelector('.popup_type_profile-edit');
 const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeRegalia = document.querySelector('.popup__input_type_regalia');
 const popupFormTypeUserInfo = document.querySelector('.popup__form_type_user-info');
+const submitButtonForProfileEditing = popupProfileEdit.querySelector('.popup__submit');
 
 // * попап добавления новой карточки
 const popupFormTypeAddCard = document.querySelector('.popup__form_type_add-card');
-const submitButton = popupFormTypeAddCard.querySelector('.popup__submit');
+const submitButtonForAddingNewCard = popupFormTypeAddCard.querySelector('.popup__submit');
 
 // * попап смены авы
 const popupFormTypeChangeAvatar = document.querySelector('.popup__form_type_user-avatar');
+const submitButtonForChangingAva = popupFormTypeChangeAvatar.querySelector('.popup__submit');
 
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
 
 // * темплейт карточки
 const templateCard = document.querySelector('#cards-template');
+
+// * задаём селекторы попапов
+const popupForDeletingSelector = '.popup_type_submit';
+const editProfilePopupSelector = '.popup_type_profile-edit';
+const popupForChangingAvaSelector = '.popup_type_change-avatar';
+const addNewCardPopupSelector = '.popup_type_add-new-card';
+
 
 // ! API
 
@@ -52,6 +62,7 @@ photoPopup.setEventListeners();
 
 // ! функция удаления карточки, которая будет приходить в экземпляр PopupWithSubmit, созданный для удаления карточки. она принимает id, который задается методом setCurrentCardId в PopupWithSubmit
 const deleteACard = (id) => {
+  renderLoading(popupForDeletingSelector);
   try {
     return api.deleteCard(id)
       .then(res => {
@@ -109,11 +120,13 @@ const profileSelectors = {
 
 const submitProfileEditForm = (evt, values) => {
   evt.preventDefault();
+  renderLoading(editProfilePopupSelector);
   const [name, about] = values;
   api.editProfile({ name, about })
     .then(res => res.json())
     .then(data => {
       profileInfo.setUserInfo(data.name, data.about);
+
       editProfilePopup.close();
     })
     .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
@@ -127,7 +140,12 @@ profileEditButton.addEventListener('click', () => {
   const { name, regalia } = profileInfo.getUserInfo();
   popupInputTypeName.value = name;
   popupInputTypeRegalia.value = regalia;
-  editProfilePopup.open();
+  if (submitButtonForProfileEditing.textContent === 'Сохранить') {
+    editProfilePopup.open();
+  } else {
+    renderLoading(editProfilePopupSelector);
+    editProfilePopup.open();
+  }
 });
 
 editProfilePopup.setEventListeners();
@@ -156,12 +174,20 @@ const changeAvatar = (evt, values) => {
       profileInfo.setAvatar(data.avatar);
     })
     .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
+    renderLoading(popupForChangingAvaSelector);
   popupForChangingAva.close();
 }
 
 const popupForChangingAva = new PopupWithForm('.popup_type_change-avatar', changeAvatar);
+
 profileChangeAvatarButton.addEventListener('click', () => {
-  popupForChangingAva.open();
+
+  if (submitButtonForChangingAva.textContent === 'Сохранить') {
+    popupForChangingAva.open();
+  } else {
+    renderLoading(popupForChangingAvaSelector);
+    popupForChangingAva.open();
+  }
 });
 popupForChangingAva.setEventListeners();
 
@@ -170,7 +196,7 @@ popupForChangingAva.setEventListeners();
 
 const submitAddCardForm = (evt, [name, link]) => {
   evt.preventDefault();
-
+  renderLoading(addNewCardPopupSelector);
   api.addNewCard({ name, link })
     .then(res => res.json())
     .then(item => {
@@ -180,8 +206,8 @@ const submitAddCardForm = (evt, [name, link]) => {
 
       addNewCardPopup.close();
 
-      submitButton.classList.add('popup__submit_disabled');
-      submitButton.disabled = true;
+      submitButtonForAddingNewCard.classList.add('popup__submit_disabled');
+      submitButtonForAddingNewCard.disabled = true;
     })
     .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`));
 }
@@ -189,10 +215,15 @@ const submitAddCardForm = (evt, [name, link]) => {
 const addNewCardPopup = new PopupWithForm('.popup_type_add-new-card', submitAddCardForm);
 
 profileAddButton.addEventListener('click', () => {
-  addNewCardPopup.open();
+  if (submitButtonForAddingNewCard.textContent === 'Сохранить') {
+    addNewCardPopup.open();
+  } else {
+    renderLoading(editProfilePopupSelector);
+    addNewCardPopup.open();
+  }
 });
-addNewCardPopup.setEventListeners();
 
+addNewCardPopup.setEventListeners();
 
 
 // * МАССИВ С СЕРВЕРА
@@ -215,3 +246,5 @@ const validChangeAvatar = new FormValidator(consts.validationConfig, popupFormTy
 validUserInfo.enableValidation();
 validAddCard.enableValidation();
 validChangeAvatar.enableValidation();
+
+export {popupForDeletingSelector}

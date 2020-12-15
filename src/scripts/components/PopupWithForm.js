@@ -8,11 +8,6 @@ export default class PopupWithForm extends Popup {
     this._popupForm = this._popup.querySelector('.popup__form');
   }
 
-  open() {
-    super.open();
-    this._popup.querySelector('.popup__submit').textContent = 'Сохранить';
-  }
-
   _getInputValues() {
     this._popupInputs = Array.from(this._popup.querySelectorAll('.popup__input'));
     return this._popupInputs.map(input => {
@@ -23,7 +18,6 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
     this._popupForm.addEventListener('submit', (evt) => {
-      this._popup.querySelector('.popup__submit').textContent = 'Подожди чутка';
       const values = this._getInputValues();
       console.log('test');
       this.submitForm(evt, values);

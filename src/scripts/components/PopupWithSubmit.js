@@ -7,16 +7,10 @@ export default class PopupWithSubmit extends Popup {
     this.currentCardId = null;
   }
 
-  open() {
-    super.open();
-    this._popup.querySelector('.popup__submit').textContent = 'Да';
-  }
-
   setEventListeners() {
     super.setEventListeners();
     const submitButton = this._popup.querySelector('.popup__submit');
     submitButton.addEventListener('click', () => {
-      this._popup.querySelector('.popup__submit').textContent = 'Подожди чутка';
       this.handleSubmit(this.currentCardId);
     });
   }
