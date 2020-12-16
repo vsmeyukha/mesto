@@ -20,11 +20,6 @@ export default class Card {
   _likeCard(evt) {
     evt.target.classList.toggle('card__like-button_active');
     this.putLike()
-      .then(res => res.json())
-      .then(data => {
-        this._setLikeCount(data.likes.length);
-      })
-      .catch(err => console.error(`Ошибка при лайке карточки: ${err}`));
   };
 
   // ? отозвать лайк
@@ -56,15 +51,10 @@ export default class Card {
 
 // ? метод удаления карточки
   _deleteCard() {
+    console.log(this.popupForDeleting, this);
     // evt.target.closest('.card').remove();
-    if (this.popupForDeleting.querySelector('.popup__submit').textContent === 'Сохранить') {
       this.popupForDeleting.open();
       this.popupForDeleting.setCurrentCardId(this.id);
-    } else {
-      renderLoading(popupForDeletingSelector);
-      this.popupForDeleting.open();
-      this.popupForDeleting.setCurrentCardId(this.id);
-    }
   };
 
   _getTemplate() {
@@ -100,6 +90,7 @@ export default class Card {
     this._visibleCard.querySelector('.card__img').src = data.link;
     this._visibleCard.querySelector('.card__img').alt = data.name;
     this._visibleCard.querySelector('.card__like-scope').textContent = data.likes.length;
+    this._visibleCard.querySelector('div').setAttribute('id', data._id);
     return this._visibleCard;
   };
 }

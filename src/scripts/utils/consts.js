@@ -27,7 +27,7 @@ const initialCards = [
   }
 ];
 
-// * вынесем отдельным объектом все используемые классы
+// * вынесем отдельным объектом все используемые при валидации классы
 const validationConfig = {
     form: '.popup__form',
     input: '.popup__input',

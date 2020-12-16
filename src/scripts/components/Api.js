@@ -10,6 +10,13 @@ export default class Api {
       method: 'GET',
       headers: this.headers
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 
   addNewCard(obj) {
@@ -21,6 +28,13 @@ export default class Api {
       },
       body: JSON.stringify(obj)
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+      }
+    })
   }
 
   deleteCard(id) {
@@ -28,6 +42,13 @@ export default class Api {
       method: 'DELETE',
       headers: this.headers
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 
   getUserInfo() {
@@ -35,6 +56,17 @@ export default class Api {
       method: 'GET',
       headers: this.headers
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
+  }
+
+  getAllNeededData() {
+    return Promise.all([this.getUserInfo(), this.getInitialCards()]);
   }
 
   editProfile(obj) {
@@ -46,6 +78,13 @@ export default class Api {
       },
       body: JSON.stringify(obj)
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 
   changeAvatar(obj) {
@@ -57,6 +96,13 @@ export default class Api {
       },
       body: JSON.stringify(obj)
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 
   addALike(id) {
@@ -64,6 +110,13 @@ export default class Api {
       method: 'PUT',
       headers: this.headers
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 
   deleteLike(id) {
@@ -71,5 +124,12 @@ export default class Api {
       method: 'DELETE',
       headers: this.headers
     })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          return Promise.reject();
+        }
+      });
   }
 }

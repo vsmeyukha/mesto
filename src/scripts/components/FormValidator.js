@@ -1,4 +1,5 @@
 export default class FormValidator {
+  // ? валидатор принимает в конструктор объект с селекторами всех элементов, так или иначе задействованных при валидации, и элемент формы, которую надо валидировать
   constructor(validationConfig, popupForm) {
     this._validationConfig = validationConfig;
     this._popupForm = popupForm;
@@ -18,15 +19,18 @@ export default class FormValidator {
 
   // * Функция, которая удаляет класс с ошибкой
   _hideInputError(inputEl) {
+    // ?  получаем спан с текстом ошибки внутри функции
     const _errorSpan = this._popupForm.querySelector(`#${inputEl.id}-error`);
+    // ? убираем красный цвет инпута
     inputEl.classList.remove(this._validationConfig.inputTypeError);
+    // ? убираем еррорСпан
     _errorSpan.classList.remove(this._validationConfig.errorText);
     // ? чистим текст ошибки
     _errorSpan.textContent = '';
   };
 
   // * Функция, которая проверяет валидность поля
-  _isValid(inputEl) {
+  isValid(inputEl) {
     // ? в if мы передаем уже не конкретный инпут с конкретным классом, а переменную
     if (!inputEl.validity.valid) {
       // ? Если поле не проходит валидацию, покажем ошибку
@@ -78,12 +82,16 @@ export default class FormValidator {
       // ? на каждый инпут вешаем обработчик события input, то бишь каждого клаца по клавишам
       inputEl.addEventListener('input', () => {
         // ? Внутри колбэка вызываем функцию isValid, передав ей форму и проверяемый элемент
-        this._isValid(inputEl);
+        this.isValid(inputEl);
         // ? и затем вызываем функцию toggleButtonState, передавая ей массив полей и кнопку
         this._toggleButtonState();
       });
     });
   };
+
+  primaryCheck() {
+    this._setEventListeners();
+  }
 
   // * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим параметром переменную, его обозначающую
   enableValidation() {    

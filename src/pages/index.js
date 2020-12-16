@@ -36,6 +36,8 @@ const submitButtonForAddingNewCard = popupFormTypeAddCard.querySelector('.popup_
 const popupFormTypeChangeAvatar = document.querySelector('.popup__form_type_user-avatar');
 const submitButtonForChangingAva = popupFormTypeChangeAvatar.querySelector('.popup__submit');
 
+
+
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
 
@@ -63,25 +65,13 @@ photoPopup.setEventListeners();
 // ! функция удаления карточки, которая будет приходить в экземпляр PopupWithSubmit, созданный для удаления карточки. она принимает id, который задается методом setCurrentCardId в PopupWithSubmit
 const deleteACard = (id) => {
   renderLoading(popupForDeletingSelector);
-  try {
     return api.deleteCard(id)
-      .then(res => {
-        if (res.status === 403) {
-          throw new Error('Нет прав на удаление')
-        }
-        return res.json();
-      })
       .then((data) => {
-        const id = data._id;
-        // initialCardList.removeItem(id);
         console.log(`Карточка удалена, ID = ${id}`);
         popupForDeleting.close();
-        window.location.reload();
+        document.getElementById(id).remove();
       })
       .catch(err => console.error(`Ошибка при удалении карточки: ${err}`));
-  } catch (err) {
-    console.log('Нет прав на удаление');
-  }
 }
 
 // ! создаем попап подтверждения удаления
@@ -92,13 +82,20 @@ popupForDeleting.setEventListeners();
 // ! создаем секшн и прочее для отрисовки карточек
 
 const getNewCard = (item, templateCard, handleCardClick, likeACard, deleteLike, isBinVisible) => {
-    const newCard = new Card(item, templateCard, handleCardClick, likeACard, deleteLike, popupForDeleting, isBinVisible);
-    return newCard.getVisibleCard(item);
+  const newCard = new Card(item, templateCard, handleCardClick, likeACard, deleteLike, popupForDeleting, isBinVisible);
+  const visibleCard = newCard.getVisibleCard(item);
+  return visibleCard;
 }
 
 // ? выносим пару раз использующиеся коллбэки в глобальную зону
-const likeACard = (id) => () => api.addALike(id);
+const likeACard = (id) => () => api.addALike(id)
+  .then(data => {
+    this._setLikeCount(data.likes.length);
+  })
+  .catch(err => console.error(`Ошибка при лайке карточки: ${err}`));
+
 const deleteLike = (id) => () => api.deleteLike(id);
+
 const handleCardClick = (item) => () => { photoPopup.open(item) };
 
 const initialCardList = new Section({
@@ -123,10 +120,8 @@ const submitProfileEditForm = (evt, values) => {
   renderLoading(editProfilePopupSelector);
   const [name, about] = values;
   api.editProfile({ name, about })
-    .then(res => res.json())
     .then(data => {
       profileInfo.setUserInfo(data.name, data.about);
-
       editProfilePopup.close();
     })
     .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
@@ -136,32 +131,25 @@ const profileInfo = new UserInfo(profileSelectors);
 
 const editProfilePopup = new PopupWithForm('.popup_type_profile-edit', submitProfileEditForm);
 
+const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
+
+validUserInfo.enableValidation();
+
 profileEditButton.addEventListener('click', () => {
   const { name, regalia } = profileInfo.getUserInfo();
   popupInputTypeName.value = name;
   popupInputTypeRegalia.value = regalia;
   if (submitButtonForProfileEditing.textContent === 'Сохранить') {
+    validUserInfo.primaryCheck();
     editProfilePopup.open();
   } else {
     renderLoading(editProfilePopupSelector);
+    validUserInfo.primaryCheck();
     editProfilePopup.open();
   }
 });
 
 editProfilePopup.setEventListeners();
-
-// ? получение информации о пользователе
-api.getUserInfo()
-  .then((res) => {
-    return res.json();
-  })
-  .then((data) => {
-    const { avatar, name, about, _id } = data;
-    profileInfo.setUserInfo(name, about);
-    profileAvatar.setAttribute('src', avatar);
-    myID = _id;
-  })
-  .catch(err => console.error(`Ошибка при получении информации о пользователе: ${err}`));
 
 // ? смена аватара
 const changeAvatar = (evt, values) => {
@@ -169,7 +157,6 @@ const changeAvatar = (evt, values) => {
   console.log(values);
   const [avatar] = values;
   api.changeAvatar({ avatar })
-    .then(res => res.json())
     .then(data => {
       profileInfo.setAvatar(data.avatar);
     })
@@ -198,7 +185,6 @@ const submitAddCardForm = (evt, [name, link]) => {
   evt.preventDefault();
   renderLoading(addNewCardPopupSelector);
   api.addNewCard({ name, link })
-    .then(res => res.json())
     .then(item => {
       const id = item._id;
       const isBinVisible = item.owner._id === myID;
@@ -225,23 +211,33 @@ profileAddButton.addEventListener('click', () => {
 
 addNewCardPopup.setEventListeners();
 
+api.getAllNeededData()
+  .then((res) => {
+    const [UserInfo, cards] = res;
+    console.log(res);
+    console.log(UserInfo);
+    console.log(cards);
 
-// * МАССИВ С СЕРВЕРА
-api.getInitialCards()
-  .then(res => res.json())
-  .then((items) => {
-    items.forEach(item => {
-      const isBinVisible = item.owner._id === myID;
-      const id = item._id;
-      initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), deleteLike(id), isBinVisible));
+    // ? получаем инфу о пользователе
+    const { avatar, name, about, _id } = UserInfo;
+    profileInfo.setUserInfo(name, about);
+    profileAvatar.setAttribute('src', avatar);
+    myID = _id;
+
+    // ? получаем массив карточек
+    cards.forEach(card => {
+      const isBinVisible = card.owner._id === myID;
+      const id = card._id;
+      initialCardList.addItem(getNewCard(card, templateCard, handleCardClick(card), likeACard(id), deleteLike(id), isBinVisible));
     });
     initialCardList.renderAll();
   })
-  .catch(err => console.error(`Ошибка при получении изначального массива карточек: ${err}`));
+  .catch(err => console.error(`Ошибка: ${err}`));
 
-const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
+
 const validAddCard = new FormValidator(consts.validationConfig, popupFormTypeAddCard);
 const validChangeAvatar = new FormValidator(consts.validationConfig, popupFormTypeChangeAvatar);
+// const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
 
 validUserInfo.enableValidation();
 validAddCard.enableValidation();
