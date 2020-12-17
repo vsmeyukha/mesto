@@ -10,7 +10,6 @@ export default class Card {
     this._handleLikeClick = this._handleLikeClick.bind(this);
     this._deleteCard = this._deleteCard.bind(this);
     this._visibleCard = this._getTemplate();
-    this._likesCounter = this._visibleCard.querySelector('.card__like-scope');
     this.popupForDeleting = popupForDeleting;
     this.id = data._id;
     this.setBinVisibility(isBinVisible);
@@ -25,12 +24,7 @@ export default class Card {
   // ? отозвать лайк
   _dislikeCard(evt) {
     evt.target.classList.toggle('card__like-button_active');
-    this.deleteLike()
-      .then(res => res.json())
-      .then(data => {
-        this._setLikeCount(data.likes.length);
-      })
-      .catch(err => console.error(`Ошибка при отзыве лайка карточки: ${err}`));
+    this.deleteLike();
   };
 
 // ? обработчик лайка
@@ -65,11 +59,6 @@ export default class Card {
   // ! создать метод для присвоения ID
   setCardID() {
     this._visibleCard.setAttribute('id', this.id);
-  }
-
-  // ? отображаем число лайков
-  _setLikeCount(count) {
-    this._likesCounter.textContent = count;
   }
 
   _setEventListeners() {

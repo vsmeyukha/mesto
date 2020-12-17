@@ -89,8 +89,12 @@ export default class FormValidator {
     });
   };
 
-  primaryCheck() {
-    this._setEventListeners();
+  resetForm() {
+    this._inputList = Array.from(this._popupForm.querySelectorAll(this._validationConfig.input));
+
+    this._inputList.forEach(inputEl => {
+      this._hideInputError(inputEl);
+    })
   }
 
   // * функция, которая добавляет обработчик всем формам. она принимает на вход объект. мы его вынесем отдельно, а ей передадим параметром переменную, его обозначающую

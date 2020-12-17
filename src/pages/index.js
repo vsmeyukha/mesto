@@ -36,8 +36,6 @@ const submitButtonForAddingNewCard = popupFormTypeAddCard.querySelector('.popup_
 const popupFormTypeChangeAvatar = document.querySelector('.popup__form_type_user-avatar');
 const submitButtonForChangingAva = popupFormTypeChangeAvatar.querySelector('.popup__submit');
 
-
-
 // * секция cards, куда импортятся все карточки
 const cardsSection = document.querySelector('.cards');
 
@@ -88,13 +86,21 @@ const getNewCard = (item, templateCard, handleCardClick, likeACard, deleteLike, 
 }
 
 // ? выносим пару раз использующиеся коллбэки в глобальную зону
+const setLikesCount = (id, count) => {
+  document.getElementById(id).querySelector('.card__like-scope').textContent = count;
+}
+
 const likeACard = (id) => () => api.addALike(id)
   .then(data => {
-    this._setLikeCount(data.likes.length);
+    setLikesCount(id, data.likes.length);
   })
   .catch(err => console.error(`Ошибка при лайке карточки: ${err}`));
 
-const deleteLike = (id) => () => api.deleteLike(id);
+const deleteLike = (id) => () => api.deleteLike(id)
+  .then(data => {
+    setLikesCount(id, data.likes.length);
+  })
+  .catch(err => console.error(`Ошибка при отзыве лайка карточки: ${err}`));
 
 const handleCardClick = (item) => () => { photoPopup.open(item) };
 
@@ -129,22 +135,22 @@ const submitProfileEditForm = (evt, values) => {
 
 const profileInfo = new UserInfo(profileSelectors);
 
-const editProfilePopup = new PopupWithForm(editProfilePopupSelector, submitProfileEditForm);
-
+const validAddCard = new FormValidator(consts.validationConfig, popupFormTypeAddCard);
+const validChangeAvatar = new FormValidator(consts.validationConfig, popupFormTypeChangeAvatar);
 const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
 
-validUserInfo.enableValidation();
+const editProfilePopup = new PopupWithForm(editProfilePopupSelector, submitProfileEditForm, () => {
+  validUserInfo.resetForm();
+});
 
 profileEditButton.addEventListener('click', () => {
   const { name, regalia } = profileInfo.getUserInfo();
   popupInputTypeName.value = name;
   popupInputTypeRegalia.value = regalia;
   if (submitButtonForProfileEditing.textContent === 'Сохранить') {
-    validUserInfo.primaryCheck();
     editProfilePopup.open();
   } else {
     renderLoading(editProfilePopupSelector);
-    validUserInfo.primaryCheck();
     editProfilePopup.open();
   }
 });
@@ -154,7 +160,6 @@ editProfilePopup.setEventListeners();
 // ? смена аватара
 const changeAvatar = (evt, values) => {
   evt.preventDefault();
-  console.log(values);
   const [avatar] = values;
   api.changeAvatar({ avatar })
     .then(data => {
@@ -165,7 +170,9 @@ const changeAvatar = (evt, values) => {
   popupForChangingAva.close();
 }
 
-const popupForChangingAva = new PopupWithForm(popupForChangingAvaSelector, changeAvatar);
+const popupForChangingAva = new PopupWithForm(popupForChangingAvaSelector, changeAvatar, () => {
+  validChangeAvatar.resetForm();
+});
 
 profileChangeAvatarButton.addEventListener('click', () => {
 
@@ -198,7 +205,9 @@ const submitAddCardForm = (evt, [name, link]) => {
     .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`));
 }
 
-const addNewCardPopup = new PopupWithForm(addNewCardPopupSelector, submitAddCardForm);
+const addNewCardPopup = new PopupWithForm(addNewCardPopupSelector, submitAddCardForm, () => {
+  validAddCard.resetForm();
+});
 
 profileAddButton.addEventListener('click', () => {
   if (submitButtonForAddingNewCard.textContent === 'Сохранить') {
@@ -214,9 +223,6 @@ addNewCardPopup.setEventListeners();
 api.getAllNeededData()
   .then((res) => {
     const [UserInfo, cards] = res;
-    console.log(res);
-    console.log(UserInfo);
-    console.log(cards);
 
     // ? получаем инфу о пользователе
     const { avatar, name, about, _id } = UserInfo;
@@ -233,11 +239,6 @@ api.getAllNeededData()
     initialCardList.renderAll();
   })
   .catch(err => console.error(`Ошибка: ${err}`));
-
-
-const validAddCard = new FormValidator(consts.validationConfig, popupFormTypeAddCard);
-const validChangeAvatar = new FormValidator(consts.validationConfig, popupFormTypeChangeAvatar);
-// const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
 
 validUserInfo.enableValidation();
 validAddCard.enableValidation();
