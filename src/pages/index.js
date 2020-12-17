@@ -87,7 +87,8 @@ const getNewCard = (item, templateCard, handleCardClick, likeACard, deleteLike, 
 
 // ? выносим пару раз использующиеся коллбэки в глобальную зону
 const setLikesCount = (id, count) => {
-  document.getElementById(id).querySelector('.card__like-scope').textContent = count;
+  const likesCountSelector = '.card__like-scope';
+  document.getElementById(id).querySelector(likesCountSelector).textContent = count;
 }
 
 const likeACard = (id) => () => api.addALike(id)
@@ -128,9 +129,13 @@ const submitProfileEditForm = (evt, values) => {
   api.editProfile({ name, about })
     .then(data => {
       profileInfo.setUserInfo(data.name, data.about);
-      editProfilePopup.close();
     })
-    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
+    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`))
+    .finally(() => {
+      submitButtonForProfileEditing.classList.add('popup__submit_disabled');
+      submitButtonForProfileEditing.disabled = true;
+      editProfilePopup.close();
+    });
 }
 
 const profileInfo = new UserInfo(profileSelectors);
@@ -147,11 +152,9 @@ profileEditButton.addEventListener('click', () => {
   const { name, regalia } = profileInfo.getUserInfo();
   popupInputTypeName.value = name;
   popupInputTypeRegalia.value = regalia;
-  if (submitButtonForProfileEditing.textContent === 'Сохранить') {
-    editProfilePopup.open();
-  } else {
+  editProfilePopup.open();
+  if (submitButtonForProfileEditing.textContent !== 'Сохранить') {
     renderLoading(editProfilePopupSelector);
-    editProfilePopup.open();
   }
 });
 
@@ -161,13 +164,17 @@ editProfilePopup.setEventListeners();
 const changeAvatar = (evt, values) => {
   evt.preventDefault();
   const [avatar] = values;
+  renderLoading(popupForChangingAvaSelector);
   api.changeAvatar({ avatar })
     .then(data => {
       profileInfo.setAvatar(data.avatar);
     })
-    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`));
-    renderLoading(popupForChangingAvaSelector);
-  popupForChangingAva.close();
+    .catch(err => console.error(`Ошибка при редактировании профиля: ${err}`))
+    .finally(() => {
+      submitButtonForChangingAva.classList.add('popup__submit_disabled');
+      submitButtonForChangingAva.disabled = true;
+      popupForChangingAva.close();
+    });
 }
 
 const popupForChangingAva = new PopupWithForm(popupForChangingAvaSelector, changeAvatar, () => {
@@ -175,14 +182,12 @@ const popupForChangingAva = new PopupWithForm(popupForChangingAvaSelector, chang
 });
 
 profileChangeAvatarButton.addEventListener('click', () => {
-
-  if (submitButtonForChangingAva.textContent === 'Сохранить') {
-    popupForChangingAva.open();
-  } else {
+  popupForChangingAva.open();
+  if (submitButtonForChangingAva.textContent !== 'Сохранить') {
     renderLoading(popupForChangingAvaSelector);
-    popupForChangingAva.open();
   }
 });
+
 popupForChangingAva.setEventListeners();
 
 
@@ -196,13 +201,13 @@ const submitAddCardForm = (evt, [name, link]) => {
       const id = item._id;
       const isBinVisible = item.owner._id === myID;
       initialCardList.addItem(getNewCard(item, templateCard, handleCardClick(item), likeACard(id), deleteLike(id), isBinVisible));
-
-      addNewCardPopup.close();
-
+    })
+    .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`))
+    .finally(() => {
       submitButtonForAddingNewCard.classList.add('popup__submit_disabled');
       submitButtonForAddingNewCard.disabled = true;
-    })
-    .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`));
+      addNewCardPopup.close();
+    });
 }
 
 const addNewCardPopup = new PopupWithForm(addNewCardPopupSelector, submitAddCardForm, () => {
@@ -210,11 +215,9 @@ const addNewCardPopup = new PopupWithForm(addNewCardPopupSelector, submitAddCard
 });
 
 profileAddButton.addEventListener('click', () => {
-  if (submitButtonForAddingNewCard.textContent === 'Сохранить') {
-    addNewCardPopup.open();
-  } else {
+  addNewCardPopup.open();
+  if (submitButtonForAddingNewCard.textContent !== 'Сохранить') {
     renderLoading(editProfilePopupSelector);
-    addNewCardPopup.open();
   }
 });
 
@@ -243,5 +246,3 @@ api.getAllNeededData()
 validUserInfo.enableValidation();
 validAddCard.enableValidation();
 validChangeAvatar.enableValidation();
-
-export {popupForDeletingSelector}

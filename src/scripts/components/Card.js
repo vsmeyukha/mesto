@@ -1,6 +1,3 @@
-import { renderLoading } from '../utils/utils';
-import { popupForDeletingSelector } from '../../pages/index';
-
 export default class Card {
   constructor(data, cardTemplate, handleCardClick, putLike, deleteLike, popupForDeleting, isBinVisible) {
     this._cardTemplate = cardTemplate;
@@ -13,6 +10,7 @@ export default class Card {
     this.popupForDeleting = popupForDeleting;
     this.id = data._id;
     this.setBinVisibility(isBinVisible);
+    this.deleteButton = null;
   };
 
   // ? лайкнуть карточку
@@ -34,14 +32,9 @@ export default class Card {
     } else {
       this._likeCard(evt);
     }
-
   }
 
-  setBinVisibility(isBinVisible) {
-    if (!isBinVisible) {
-      this._visibleCard.querySelector('.card__delete-card').classList.add('card__delete-card_invisible');
-    }
-  }
+
 
 // ? метод удаления карточки
   _deleteCard() {
@@ -55,6 +48,13 @@ export default class Card {
     return this._cardTemplate.content.cloneNode(true);
   };
 
+  setBinVisibility(isBinVisible) {
+    if (!isBinVisible) {
+      this.deleteButton = this._visibleCard.querySelector('.card__delete-card');
+      this.deleteButton.classList.add('card__delete-card_invisible');
+    }
+  }
+
   // TODO надо задать карточке id чтобы можно было ее удалить из разметки по ее id
   // ! создать метод для присвоения ID
   setCardID() {
@@ -62,22 +62,26 @@ export default class Card {
   }
 
   _setEventListeners() {
+    this.deleteButton = this._visibleCard.querySelector('.card__delete-card');
+
     this._visibleCard.querySelector('.card__img').addEventListener('click', () => {
       this.handleCardClick();
     });
 
     this._visibleCard.querySelector('.card__like-button').addEventListener('click', this._handleLikeClick);
 
-    this._visibleCard.querySelector('.card__delete-card').addEventListener('click', this._deleteCard);
+    this.deleteButton.addEventListener('click', this._deleteCard);
   };
 
   getVisibleCard(data) {
 
     this._setEventListeners();
 
+    const image = this._visibleCard.querySelector('.card__img');
+
     this._visibleCard.querySelector('.card__title').textContent = data.name;
-    this._visibleCard.querySelector('.card__img').src = data.link;
-    this._visibleCard.querySelector('.card__img').alt = data.name;
+    image.src = data.link;
+    image.alt = data.name;
     this._visibleCard.querySelector('.card__like-scope').textContent = data.likes.length;
     this._visibleCard.querySelector('div').setAttribute('id', data._id);
     return this._visibleCard;
