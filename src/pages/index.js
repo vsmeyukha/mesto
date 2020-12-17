@@ -76,7 +76,7 @@ const deleteACard = (id) => {
 
 // ! создаем попап подтверждения удаления
 
-const popupForDeleting = new PopupWithSubmit('.popup_type_submit', deleteACard);
+const popupForDeleting = new PopupWithSubmit(popupForDeletingSelector, deleteACard);
 popupForDeleting.setEventListeners();
 
 // ! создаем секшн и прочее для отрисовки карточек
@@ -129,7 +129,7 @@ const submitProfileEditForm = (evt, values) => {
 
 const profileInfo = new UserInfo(profileSelectors);
 
-const editProfilePopup = new PopupWithForm('.popup_type_profile-edit', submitProfileEditForm);
+const editProfilePopup = new PopupWithForm(editProfilePopupSelector, submitProfileEditForm);
 
 const validUserInfo = new FormValidator(consts.validationConfig, popupFormTypeUserInfo);
 
@@ -165,7 +165,7 @@ const changeAvatar = (evt, values) => {
   popupForChangingAva.close();
 }
 
-const popupForChangingAva = new PopupWithForm('.popup_type_change-avatar', changeAvatar);
+const popupForChangingAva = new PopupWithForm(popupForChangingAvaSelector, changeAvatar);
 
 profileChangeAvatarButton.addEventListener('click', () => {
 
@@ -198,7 +198,7 @@ const submitAddCardForm = (evt, [name, link]) => {
     .catch(err => console.error(`Ошибка при добавлении карточки: ${err}`));
 }
 
-const addNewCardPopup = new PopupWithForm('.popup_type_add-new-card', submitAddCardForm);
+const addNewCardPopup = new PopupWithForm(addNewCardPopupSelector, submitAddCardForm);
 
 profileAddButton.addEventListener('click', () => {
   if (submitButtonForAddingNewCard.textContent === 'Сохранить') {
